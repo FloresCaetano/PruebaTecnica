@@ -2,9 +2,8 @@
 class_name HurtboxComponent
 extends Area2D
 
-@export var damage: int = 1
+@export var health_component: HealthComponent
 
-func _init() -> void:
-	# Desactivamos el monitoreo por defecto; las animaciones lo encenderán/apagarán
-	monitoring = false 
-	monitorable = true
+func damage(amount: int) -> void:
+	if health_component:
+		health_component.damage(amount)

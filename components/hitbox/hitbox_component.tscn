@@ -1,6 +1,10 @@
-[gd_scene format=3 uid="uid://bolpoa5hpjnv2"]
+[gd_scene format=3 uid="uid://bwqdhaianfw1s"]
 
-[ext_resource type="Script" uid="uid://bnvoxm06umgaa" path="res://components/hitbox/hitbox_component.gd" id="1_uf4oc"]
+[ext_resource type="Script" uid="uid://cyow0dccbf5b3" path="res://components/hitbox/hitbox_component.gd" id="1_moset"]
 
-[node name="HitboxComponent" type="Area2D" unique_id=1259233882]
-script = ExtResource("1_uf4oc")
+[node name="HitboxComponent" type="Area2D" unique_id=2103933897]
+collision_layer = 0
+monitorable = false
+script = ExtResource("1_moset")
+
+[connection signal="area_entered" from="." to="." method="_on_hurtbox_entered"]

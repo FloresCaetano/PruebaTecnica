@@ -3,8 +3,20 @@ class_name HitboxComponent
 extends Area2D
 
 @export var damage: int = 1
+@export var is_active : bool = true
 
-func _init() -> void:
-	# We've disabled monitoring by default, animations will turn it on or off
-	monitoring = false 
-	monitorable = true
+func _ready() -> void:
+	if not is_active:
+		desactivate()
+
+func activate() -> void:
+	visible = true
+	monitoring = true
+
+func desactivate() -> void:
+	visible = false
+	monitoring = false
+
+func _on_hurtbox_entered(area: Area2D) -> void:
+	if area is HurtboxComponent:
+		area.damage(damage)

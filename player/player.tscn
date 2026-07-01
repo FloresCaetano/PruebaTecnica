@@ -1,12 +1,42 @@
 [gd_scene format=3 uid="uid://csu3wrmn0ouv6"]
 
+[ext_resource type="Shader" uid="uid://dhux2q1131iey" path="res://shared/shaders/burn.gdshader" id="1_kb6p2"]
+[ext_resource type="Script" uid="uid://brb7a7uo5nqak" path="res://player/player.gd" id="1_rgyib"]
 [ext_resource type="Texture2D" uid="uid://cbk7ynlfyaysm" path="res://player/assets/Warrior_Attack1.png" id="1_yw30f"]
 [ext_resource type="Texture2D" uid="uid://buutxfgehj0th" path="res://player/assets/Warrior_Attack2.png" id="2_qjkh3"]
 [ext_resource type="Texture2D" uid="uid://bxc10ue0btu31" path="res://player/assets/Warrior_Idle.png" id="3_g6k8r"]
 [ext_resource type="Texture2D" uid="uid://llv83ry7fx2g" path="res://player/assets/Warrior_Run.png" id="4_boad6"]
 [ext_resource type="PackedScene" uid="uid://temficjn0tog" path="res://components/health/health_component.tscn" id="5_boad6"]
-[ext_resource type="PackedScene" uid="uid://bolpoa5hpjnv2" path="res://components/hitbox/hitbox_component.tscn" id="6_boad6"]
-[ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hurtbox/hurtbox_component.tscn" id="7_rgyib"]
+[ext_resource type="PackedScene" uid="uid://bolpoa5hpjnv2" path="res://components/hurtbox/hurtbox_component.tscn" id="6_boad6"]
+[ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hitbox/hitbox_component.tscn" id="7_rgyib"]
+[ext_resource type="Script" uid="uid://l2y4lf1g715i" path="res://player/fsm/idle_state.gd" id="9_8t03j"]
+[ext_resource type="Script" uid="uid://716dgtexrq73" path="res://player/fsm/walk_state.gd" id="9_hg6s5"]
+[ext_resource type="Script" uid="uid://cc4qdh8mxy6mw" path="res://player/fsm/attack_state.gd" id="11_2ieo8"]
+[ext_resource type="Script" uid="uid://cmmkiswoe8j1g" path="res://player/fsm/hurt_state.gd" id="12_ebec5"]
+[ext_resource type="Script" uid="uid://cjp4mcxr2ik1e" path="res://player/fsm/dead_state.gd" id="13_yllr7"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kb6p2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wodsf"]
+noise = SubResource("FastNoiseLite_kb6p2")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_32hag"]
+noise_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tqiix"]
+noise = SubResource("FastNoiseLite_32hag")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e7oew"]
+shader = ExtResource("1_kb6p2")
+shader_parameter/position = Vector2(0.5, 0.515)
+shader_parameter/radius = -0.245
+shader_parameter/borderWidth = 0.2
+shader_parameter/burnMult = 0.34
+shader_parameter/noiseTexture = SubResource("NoiseTexture2D_tqiix")
+shader_parameter/burnColor = Color(0.7727662, 0.43038997, 3.85046e-07, 1)
+shader_parameter/pixel_size = 0.004
+shader_parameter/blend_steps = 8.5
+shader_parameter/colorCurve = SubResource("NoiseTexture2D_wodsf")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rgyib"]
 atlas = ExtResource("1_yw30f")
@@ -111,7 +141,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2ieo8")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack1",
 "speed": 10.0
 }, {
@@ -128,7 +158,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wodsf")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack2",
 "speed": 10.0
 }, {
@@ -196,44 +226,64 @@ size = Vector2(37, 52)
 size = Vector2(45.5, 52)
 
 [node name="Player" type="CharacterBody2D" unique_id=319783299]
+script = ExtResource("1_rgyib")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=96013162]
 texture_filter = 1
+material = SubResource("ShaderMaterial_e7oew")
 sprite_frames = SubResource("SpriteFrames_b8hi5")
 animation = &"idle"
-frame_progress = 0.37511468
+frame_progress = 0.0066192592
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=71479600]
 position = Vector2(1, 26)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_2uvqg")
 
-[node name="Components" type="Node" parent="." unique_id=837623887]
+[node name="Components" type="Node2D" parent="." unique_id=57231313]
 
 [node name="HealthComponent" parent="Components" unique_id=339002736 instance=ExtResource("5_boad6")]
+_max_health = 10
 
-[node name="HitboxComponent" parent="Components" unique_id=1259233882 instance=ExtResource("6_boad6")]
+[node name="HurtboxComponent" parent="Components" unique_id=1259233882 node_paths=PackedStringArray("health_component") instance=ExtResource("6_boad6")]
+collision_layer = 2
+health_component = NodePath("../HealthComponent")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitboxComponent" unique_id=751559961]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtboxComponent" unique_id=751559961]
 position = Vector2(-0.5, 1)
 shape = SubResource("RectangleShape2D_boad6")
 debug_color = Color(0.81960785, 0.7019608, 1, 0.21960784)
 
-[node name="HurtboxComponent" parent="Components" unique_id=2103933897 instance=ExtResource("7_rgyib")]
+[node name="HitboxComponent" parent="Components" unique_id=2103933897 instance=ExtResource("7_rgyib")]
+collision_layer = 4
+collision_mask = 4
+is_active = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtboxComponent" unique_id=485455370]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitboxComponent" unique_id=485455370]
 position = Vector2(40.75, 1)
 shape = SubResource("RectangleShape2D_rgyib")
 debug_color = Color(0.81960785, 0.7019608, 1, 0)
 
-[node name="LimboHSM" type="LimboHSM" parent="." unique_id=1746074234]
+[node name="HSM" type="LimboHSM" parent="." unique_id=1746074234]
 
-[node name="Idle" type="LimboState" parent="LimboHSM" unique_id=1632371057]
+[node name="IdleState" type="LimboState" parent="HSM" unique_id=1632371057]
+script = ExtResource("9_8t03j")
 
-[node name="Walk" type="LimboState" parent="LimboHSM" unique_id=508152984]
+[node name="WalkState" type="LimboState" parent="HSM" unique_id=508152984]
+script = ExtResource("9_hg6s5")
 
-[node name="Attack" type="LimboState" parent="LimboHSM" unique_id=210146447]
+[node name="AttackState" type="LimboState" parent="HSM" unique_id=210146447]
+script = ExtResource("11_2ieo8")
 
-[node name="Hurt" type="LimboState" parent="LimboHSM" unique_id=781548314]
+[node name="HurtState" type="LimboState" parent="HSM" unique_id=781548314]
+script = ExtResource("12_ebec5")
 
-[node name="Dead" type="LimboState" parent="LimboHSM" unique_id=584723437]
+[node name="DeadState" type="LimboState" parent="HSM" unique_id=584723437]
+script = ExtResource("13_yllr7")
+
+[node name="InputBufferTimer" type="Timer" parent="." unique_id=1392140737]
+one_shot = true
+ignore_time_scale = true
+
+[connection signal="damage_taken" from="Components/HealthComponent" to="." method="_on_health_component_damage_taken"]
+[connection signal="timeout" from="InputBufferTimer" to="." method="_on_input_buffer_timer_timeout"]

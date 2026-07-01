@@ -1,6 +1,8 @@
-[gd_scene format=3 uid="uid://bwqdhaianfw1s"]
+[gd_scene format=3 uid="uid://bolpoa5hpjnv2"]
 
-[ext_resource type="Script" uid="uid://cyow0dccbf5b3" path="res://components/hurtbox/hurtbox_component.gd" id="1_moset"]
+[ext_resource type="Script" uid="uid://bnvoxm06umgaa" path="res://components/hurtbox/hurtbox_component.gd" id="1_uf4oc"]
 
-[node name="HurtboxComponent" type="Area2D" unique_id=2103933897]
-script = ExtResource("1_moset")
+[node name="HurtboxComponent" type="Area2D" unique_id=1259233882]
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_uf4oc")

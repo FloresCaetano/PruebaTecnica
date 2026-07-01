@@ -6,6 +6,7 @@ enum BufferedAction {
 	ATTACK,
 }
 
+static var active_player : Player
 @export var speed: float = 150.0
 @export var acceleration: float = 20.0
 var input_direction: Vector2 = Vector2.ZERO
@@ -29,6 +30,7 @@ var current_buffered_action: BufferedAction = BufferedAction.NONE
 
 
 func _ready() -> void:
+	active_player = self
 	_init_state_machine()
 
 

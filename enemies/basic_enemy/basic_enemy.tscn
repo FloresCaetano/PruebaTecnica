@@ -1,0 +1,304 @@
+[gd_scene format=3 uid="uid://g8uudpc3nmip"]
+
+[ext_resource type="Script" uid="uid://cgy8cv5r4oh2s" path="res://enemies/basic_enemy/basic_enemy.gd" id="1_fwb20"]
+[ext_resource type="Texture2D" uid="uid://biti1fhdokoiu" path="res://enemies/basic_enemy/assets/basic_enemy_right_attack.png" id="1_u66kj"]
+[ext_resource type="Texture2D" uid="uid://qde40p7wvjr0" path="res://enemies/basic_enemy/assets/basic_enemy_idle.png" id="2_fwb20"]
+[ext_resource type="Texture2D" uid="uid://biuy53dfmfrcl" path="res://enemies/basic_enemy/assets/basic_enemy_walk.png" id="3_hpkks"]
+[ext_resource type="PackedScene" uid="uid://temficjn0tog" path="res://components/health/health_component.tscn" id="4_rutms"]
+[ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hitbox/hitbox_component.tscn" id="5_wf1kn"]
+[ext_resource type="PackedScene" uid="uid://bolpoa5hpjnv2" path="res://components/hurtbox/hurtbox_component.tscn" id="6_svadl"]
+[ext_resource type="Script" uid="uid://byt54grw4iyf5" path="res://enemies/ai/tasks/play_sprite_animation.gd" id="8_hpkks"]
+[ext_resource type="Script" uid="uid://ccr43pgd4488l" path="res://enemies/ai/tasks/get_first_in_group.gd" id="9_rutms"]
+[ext_resource type="Script" uid="uid://dcjgktglb1slf" path="res://enemies/ai/tasks/pursue.gd" id="10_wf1kn"]
+[ext_resource type="Script" uid="uid://dbo0kq2cwb4qv" path="res://enemies/ai/tasks/face_target.gd" id="11_svadl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_avyl3"]
+atlas = ExtResource("1_u66kj")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_harik"]
+atlas = ExtResource("1_u66kj")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7v5ht"]
+atlas = ExtResource("1_u66kj")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mub7m"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx3gm"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hpeqp"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ev41"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(960, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7qksi"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(1280, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k0qwt"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(1600, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o6p1x"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(1920, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xovfk"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(2240, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqg4y"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(2560, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fhinw"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(2880, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_51ejo"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(3200, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mbgv6"]
+atlas = ExtResource("2_fwb20")
+region = Rect2(3520, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2cpr"]
+atlas = ExtResource("3_hpkks")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3263u"]
+atlas = ExtResource("3_hpkks")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gjald"]
+atlas = ExtResource("3_hpkks")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_26qwg"]
+atlas = ExtResource("3_hpkks")
+region = Rect2(960, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_olqfx"]
+atlas = ExtResource("3_hpkks")
+region = Rect2(1280, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5fiu"]
+atlas = ExtResource("3_hpkks")
+region = Rect2(1600, 0, 320, 320)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_udw7g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_avyl3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_harik")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7v5ht")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mub7m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx3gm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hpeqp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ev41")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7qksi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k0qwt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o6p1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xovfk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rqg4y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fhinw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_51ejo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mbgv6")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q2cpr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3263u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gjald")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_26qwg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_olqfx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5fiu")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b3t66"]
+radius = 6.3245554
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t7ck1"]
+size = Vector2(133, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8a8cg"]
+size = Vector2(36, 17)
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_hpkks"]
+var/speed/name = &"speed"
+var/speed/type = 3
+var/speed/value = 100.0
+var/speed/hint = 0
+var/speed/hint_string = ""
+var/acceleration/name = &"acceleration"
+var/acceleration/type = 3
+var/acceleration/value = 0.0
+var/acceleration/hint = 0
+var/acceleration/hint_string = ""
+
+[sub_resource type="BTAction" id="BTAction_rutms"]
+script = ExtResource("8_hpkks")
+
+[sub_resource type="BTRandomWait" id="BTRandomWait_hpkks"]
+min_duration = 0.5
+max_duration = 1.0
+
+[sub_resource type="BTSequence" id="BTSequence_fwb20"]
+custom_name = "Pause before action"
+children = [SubResource("BTAction_rutms"), SubResource("BTRandomWait_hpkks")]
+
+[sub_resource type="BTAction" id="BTAction_hpkks"]
+script = ExtResource("8_hpkks")
+animation_name = "walk"
+
+[sub_resource type="BTAction" id="BTAction_wf1kn"]
+script = ExtResource("9_rutms")
+group = &"player"
+
+[sub_resource type="BTAction" id="BTAction_svadl"]
+script = ExtResource("10_wf1kn")
+
+[sub_resource type="BTTimeLimit" id="BTTimeLimit_avyl3"]
+time_limit = 2.0
+children = [SubResource("BTAction_svadl")]
+
+[sub_resource type="BTSequence" id="BTSequence_wf1kn"]
+custom_name = "Pursue player"
+children = [SubResource("BTAction_hpkks"), SubResource("BTAction_wf1kn"), SubResource("BTTimeLimit_avyl3")]
+
+[sub_resource type="BTAction" id="BTAction_avyl3"]
+script = ExtResource("11_svadl")
+
+[sub_resource type="BTWait" id="BTWait_harik"]
+duration = 0.1
+
+[sub_resource type="BBNode" id="BBNode_svadl"]
+saved_value = NodePath(".")
+resource_name = "."
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_avyl3"]
+node = SubResource("BBNode_svadl")
+method = &"attack"
+
+[sub_resource type="BTWait" id="BTWait_svadl"]
+duration = 0.1
+
+[sub_resource type="BTSequence" id="BTSequence_svadl"]
+custom_name = "Melee attack"
+children = [SubResource("BTAction_avyl3"), SubResource("BTWait_harik"), SubResource("BTCallMethod_avyl3"), SubResource("BTWait_svadl")]
+
+[sub_resource type="BTSequence" id="BTSequence_rutms"]
+children = [SubResource("BTSequence_fwb20"), SubResource("BTSequence_wf1kn"), SubResource("BTSequence_svadl")]
+
+[sub_resource type="BehaviorTree" id="BehaviorTree_wf1kn"]
+blackboard_plan = SubResource("BlackboardPlan_hpkks")
+root_task = SubResource("BTSequence_rutms")
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_fwb20"]
+var/acceleration/name = &"acceleration"
+var/acceleration/type = 3
+var/acceleration/value = 20.0
+var/acceleration/hint = 0
+var/acceleration/hint_string = ""
+
+[node name="BasicEnemy" type="CharacterBody2D" unique_id=420169498]
+script = ExtResource("1_fwb20")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1833333927]
+sprite_frames = SubResource("SpriteFrames_udw7g")
+animation = &"attack"
+frame = 2
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1433727584]
+position = Vector2(0, 30)
+rotation = 1.5707964
+shape = SubResource("CircleShape2D_b3t66")
+
+[node name="Components" type="Node2D" parent="." unique_id=392150002]
+
+[node name="HealthComponent" parent="Components" unique_id=339002736 instance=ExtResource("4_rutms")]
+
+[node name="HitboxComponent" parent="Components" unique_id=2103933897 instance=ExtResource("5_wf1kn")]
+collision_mask = 2
+is_active = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitboxComponent" unique_id=1896101376]
+position = Vector2(67, 29)
+shape = SubResource("RectangleShape2D_t7ck1")
+debug_color = Color(0.76818, 0.6603, 0.93, 0.03137255)
+
+[node name="HurtboxComponent" parent="Components" unique_id=1259233882 instance=ExtResource("6_svadl")]
+position = Vector2(0, 30)
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtboxComponent" unique_id=1882730310]
+position = Vector2(3, -1.5)
+shape = SubResource("RectangleShape2D_8a8cg")
+debug_color = Color(0.67841333, 0.59040004, 0.82, 0.34901962)
+
+[node name="BTPlayer" type="BTPlayer" parent="." unique_id=1157817737]
+behavior_tree = SubResource("BehaviorTree_wf1kn")
+blackboard_plan = SubResource("BlackboardPlan_fwb20")

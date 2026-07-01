@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://csu3wrmn0ouv6" path="res://player/player.tscn" id="5_l4h6c"]
 [ext_resource type="Script" uid="uid://ctdyqd6h8j2nw" path="res://components/health/health_component.gd" id="6_5kygb"]
 [ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hitbox/hitbox_component.tscn" id="7_dh3ya"]
+[ext_resource type="PackedScene" uid="uid://g8uudpc3nmip" path="res://enemies/basic_enemy/basic_enemy.tscn" id="8_vxagc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dh3ya"]
 texture = ExtResource("1_jj61i")
@@ -217,7 +218,7 @@ tile_set = SubResource("TileSet_5kygb")
 position = Vector2(668, 388)
 
 [node name="HurtboxComponent" type="Area2D" parent="." unique_id=897531488 node_paths=PackedStringArray("health_component")]
-position = Vector2(553, 384)
+position = Vector2(1521, 429)
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("5_5kygb")
@@ -234,10 +235,13 @@ script = ExtResource("6_5kygb")
 metadata/_custom_type_script = "uid://ctdyqd6h8j2nw"
 
 [node name="HitboxComponent" parent="." unique_id=2103933897 instance=ExtResource("7_dh3ya")]
-position = Vector2(852, 389)
+position = Vector2(1820, 434)
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=1143681923]
 position = Vector2(-14, 12)
 shape = SubResource("RectangleShape2D_vxagc")
 debug_color = Color(0.8019966, 0.6235636, 3.85046e-07, 0.41960785)
+
+[node name="BasicEnemy" parent="." unique_id=420169498 instance=ExtResource("8_vxagc")]
+position = Vector2(482, 262)

@@ -57,6 +57,10 @@ attack={
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Enemies"
 
+[limbo_ai]
+
+behavior_tree/user_task_dirs=PackedStringArray("res://enemies/ai/tasks")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

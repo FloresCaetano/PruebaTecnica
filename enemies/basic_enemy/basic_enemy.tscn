@@ -1,16 +1,19 @@
 [gd_scene format=3 uid="uid://g8uudpc3nmip"]
 
-[ext_resource type="Script" uid="uid://cgy8cv5r4oh2s" path="res://enemies/basic_enemy/basic_enemy.gd" id="1_fwb20"]
+[ext_resource type="Script" uid="uid://dd0jx8jwluosa" path="res://enemies/basic_enemy/basic_enemy.gd" id="1_fwb20"]
+[ext_resource type="Shader" uid="uid://cwcx0tbnw1dmn" path="res://shared/shaders/flash.gdshader" id="1_rutms"]
 [ext_resource type="Texture2D" uid="uid://biti1fhdokoiu" path="res://enemies/basic_enemy/assets/basic_enemy_right_attack.png" id="1_u66kj"]
 [ext_resource type="Texture2D" uid="uid://qde40p7wvjr0" path="res://enemies/basic_enemy/assets/basic_enemy_idle.png" id="2_fwb20"]
 [ext_resource type="Texture2D" uid="uid://biuy53dfmfrcl" path="res://enemies/basic_enemy/assets/basic_enemy_walk.png" id="3_hpkks"]
 [ext_resource type="PackedScene" uid="uid://temficjn0tog" path="res://components/health/health_component.tscn" id="4_rutms"]
 [ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hitbox/hitbox_component.tscn" id="5_wf1kn"]
 [ext_resource type="PackedScene" uid="uid://bolpoa5hpjnv2" path="res://components/hurtbox/hurtbox_component.tscn" id="6_svadl"]
-[ext_resource type="Script" uid="uid://byt54grw4iyf5" path="res://enemies/ai/tasks/play_sprite_animation.gd" id="8_hpkks"]
-[ext_resource type="Script" uid="uid://ccr43pgd4488l" path="res://enemies/ai/tasks/get_first_in_group.gd" id="9_rutms"]
-[ext_resource type="Script" uid="uid://dcjgktglb1slf" path="res://enemies/ai/tasks/pursue.gd" id="10_wf1kn"]
-[ext_resource type="Script" uid="uid://dbo0kq2cwb4qv" path="res://enemies/ai/tasks/face_target.gd" id="11_svadl"]
+[ext_resource type="BehaviorTree" uid="uid://ptfsonq8saey" path="res://enemies/ai/trees/basic_enemy.tres" id="8_hpkks"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wf1kn"]
+shader = ExtResource("1_rutms")
+shader_parameter/flash_modifier = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_avyl3"]
 atlas = ExtResource("1_u66kj")
@@ -180,81 +183,11 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_b3t66"]
 radius = 6.3245554
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_t7ck1"]
-size = Vector2(133, 17)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8a8cg"]
-size = Vector2(36, 17)
+size = Vector2(36, 15.5)
 
-[sub_resource type="BlackboardPlan" id="BlackboardPlan_hpkks"]
-var/speed/name = &"speed"
-var/speed/type = 3
-var/speed/value = 100.0
-var/speed/hint = 0
-var/speed/hint_string = ""
-var/acceleration/name = &"acceleration"
-var/acceleration/type = 3
-var/acceleration/value = 0.0
-var/acceleration/hint = 0
-var/acceleration/hint_string = ""
-
-[sub_resource type="BTAction" id="BTAction_rutms"]
-script = ExtResource("8_hpkks")
-
-[sub_resource type="BTRandomWait" id="BTRandomWait_hpkks"]
-min_duration = 0.5
-max_duration = 1.0
-
-[sub_resource type="BTSequence" id="BTSequence_fwb20"]
-custom_name = "Pause before action"
-children = [SubResource("BTAction_rutms"), SubResource("BTRandomWait_hpkks")]
-
-[sub_resource type="BTAction" id="BTAction_hpkks"]
-script = ExtResource("8_hpkks")
-animation_name = "walk"
-
-[sub_resource type="BTAction" id="BTAction_wf1kn"]
-script = ExtResource("9_rutms")
-group = &"player"
-
-[sub_resource type="BTAction" id="BTAction_svadl"]
-script = ExtResource("10_wf1kn")
-
-[sub_resource type="BTTimeLimit" id="BTTimeLimit_avyl3"]
-time_limit = 2.0
-children = [SubResource("BTAction_svadl")]
-
-[sub_resource type="BTSequence" id="BTSequence_wf1kn"]
-custom_name = "Pursue player"
-children = [SubResource("BTAction_hpkks"), SubResource("BTAction_wf1kn"), SubResource("BTTimeLimit_avyl3")]
-
-[sub_resource type="BTAction" id="BTAction_avyl3"]
-script = ExtResource("11_svadl")
-
-[sub_resource type="BTWait" id="BTWait_harik"]
-duration = 0.1
-
-[sub_resource type="BBNode" id="BBNode_svadl"]
-saved_value = NodePath(".")
-resource_name = "."
-
-[sub_resource type="BTCallMethod" id="BTCallMethod_avyl3"]
-node = SubResource("BBNode_svadl")
-method = &"attack"
-
-[sub_resource type="BTWait" id="BTWait_svadl"]
-duration = 0.1
-
-[sub_resource type="BTSequence" id="BTSequence_svadl"]
-custom_name = "Melee attack"
-children = [SubResource("BTAction_avyl3"), SubResource("BTWait_harik"), SubResource("BTCallMethod_avyl3"), SubResource("BTWait_svadl")]
-
-[sub_resource type="BTSequence" id="BTSequence_rutms"]
-children = [SubResource("BTSequence_fwb20"), SubResource("BTSequence_wf1kn"), SubResource("BTSequence_svadl")]
-
-[sub_resource type="BehaviorTree" id="BehaviorTree_wf1kn"]
-blackboard_plan = SubResource("BlackboardPlan_hpkks")
-root_task = SubResource("BTSequence_rutms")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t7ck1"]
+size = Vector2(69.5, 17)
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_fwb20"]
 var/acceleration/name = &"acceleration"
@@ -263,14 +196,107 @@ var/acceleration/value = 20.0
 var/acceleration/hint = 0
 var/acceleration/hint_string = ""
 
-[node name="BasicEnemy" type="CharacterBody2D" unique_id=420169498]
+[sub_resource type="Animation" id="Animation_rutms"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_wf1kn"]
+resource_name = "die"
+length = 1.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.24666667, 0.53333336),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-3.91, -12.295), Vector2(-12.63, -3.42)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.26666668, 0.53333336),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -0.44505895925855404, -0.9599310885968813]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(-1.4901161e-08, 0.03333336, 0.2, 0.2333333, 0.4333333, 0.46666667, 0.6333333, 0.6666666, 0.8910289, 0.92436224, 1.0910289, 1.1243622, 1.2082539, 1.2415873, 1.4082539, 1.4415872, 1.5674645, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_svadl"]
+_data = {
+&"RESET": SubResource("Animation_rutms"),
+&"die": SubResource("Animation_wf1kn")
+}
+
+[node name="BasicEnemy" type="CharacterBody2D" unique_id=420169498 node_paths=PackedStringArray("hitbox_component", "animated_sprite_2d", "animation_player", "bt_player", "components", "health_component", "hurtbox_component")]
 script = ExtResource("1_fwb20")
+hitbox_component = NodePath("Components/HitboxComponent")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+animation_player = NodePath("AnimationPlayer")
+bt_player = NodePath("BTPlayer")
+components = NodePath("Components")
+health_component = NodePath("Components/HealthComponent")
+hurtbox_component = NodePath("Components/HurtboxComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1833333927]
+modulate = Color(1, 1, 1, 0.9999996)
+texture_filter = 1
+material = SubResource("ShaderMaterial_wf1kn")
 sprite_frames = SubResource("SpriteFrames_udw7g")
-animation = &"attack"
-frame = 2
-frame_progress = 1.0
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1433727584]
 position = Vector2(0, 30)
@@ -281,24 +307,28 @@ shape = SubResource("CircleShape2D_b3t66")
 
 [node name="HealthComponent" parent="Components" unique_id=339002736 instance=ExtResource("4_rutms")]
 
+[node name="HurtboxComponent" parent="Components" unique_id=1259233882 node_paths=PackedStringArray("health_component") instance=ExtResource("6_svadl")]
+position = Vector2(0, 30)
+collision_layer = 4
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtboxComponent" unique_id=1882730310]
+position = Vector2(3, -4.25)
+shape = SubResource("RectangleShape2D_8a8cg")
+debug_color = Color(0.67841333, 0.59040004, 0.82, 0.34901962)
+
 [node name="HitboxComponent" parent="Components" unique_id=2103933897 instance=ExtResource("5_wf1kn")]
 collision_mask = 2
 is_active = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitboxComponent" unique_id=1896101376]
-position = Vector2(67, 29)
+position = Vector2(98.75, 15)
 shape = SubResource("RectangleShape2D_t7ck1")
 debug_color = Color(0.76818, 0.6603, 0.93, 0.03137255)
 
-[node name="HurtboxComponent" parent="Components" unique_id=1259233882 instance=ExtResource("6_svadl")]
-position = Vector2(0, 30)
-collision_layer = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtboxComponent" unique_id=1882730310]
-position = Vector2(3, -1.5)
-shape = SubResource("RectangleShape2D_8a8cg")
-debug_color = Color(0.67841333, 0.59040004, 0.82, 0.34901962)
-
 [node name="BTPlayer" type="BTPlayer" parent="." unique_id=1157817737]
-behavior_tree = SubResource("BehaviorTree_wf1kn")
+behavior_tree = ExtResource("8_hpkks")
 blackboard_plan = SubResource("BlackboardPlan_fwb20")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1557862506]
+libraries/ = SubResource("AnimationLibrary_svadl")

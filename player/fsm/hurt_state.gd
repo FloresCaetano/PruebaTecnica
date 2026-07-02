@@ -10,7 +10,7 @@ func _enter() -> void:
 		return
 	
 	player.play_damage_flash()
-	TimeManager.trigger_hit_stop(0.1, 0.05)
+	TimeManager.trigger_hit_stop(0.05, 0.01, 0.0)
 
 
 func _update(delta: float) -> void:

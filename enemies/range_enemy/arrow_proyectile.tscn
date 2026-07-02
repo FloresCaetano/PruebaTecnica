@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bxsbydv03pd3a"]
+
+[ext_resource type="Texture2D" uid="uid://ynlweiqq1m1q" path="res://enemies/range_enemy/assets/arrow.png" id="1_m4rin"]
+[ext_resource type="Script" uid="uid://c4yq0aun8qdpu" path="res://enemies/range_enemy/arrow_proyectile.gd" id="1_q5m0h"]
+[ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hitbox/hitbox_component.tscn" id="2_4yxb4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4yxb4"]
+size = Vector2(12, 20)
+
+[node name="ArrowProyectile" type="Node2D" unique_id=1787114927]
+script = ExtResource("1_q5m0h")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=189165618]
+texture_filter = 1
+texture = ExtResource("1_m4rin")
+
+[node name="HitboxComponent" parent="." unique_id=2103933897 instance=ExtResource("2_4yxb4")]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=284995281]
+position = Vector2(10, 0)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_4yxb4")
+
+[connection signal="hit_landed" from="HitboxComponent" to="." method="_on_hitbox_component_hit_landed"]

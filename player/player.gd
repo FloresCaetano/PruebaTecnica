@@ -4,6 +4,7 @@ extends CharacterBody2D
 enum BufferedAction {
 	NONE,
 	ATTACK,
+	PARRY,
 }
 
 static var active_player : Player
@@ -12,6 +13,7 @@ static var active_player : Player
 var input_direction: Vector2 = Vector2.ZERO
 var current_buffered_action: BufferedAction = BufferedAction.NONE
 
+@onready var parry_cooldown_timer: Timer = $ParryCooldownTimer
 @onready var input_buffer_timer: Timer = $InputBufferTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 # HSM
@@ -19,6 +21,9 @@ var current_buffered_action: BufferedAction = BufferedAction.NONE
 @onready var idle_state: LimboState = $HSM/IdleState
 @onready var walk_state: LimboState = $HSM/WalkState
 @onready var attack_state: LimboState = $HSM/AttackState
+@onready var attack_1_state: LimboState = $HSM/AttackState/Attack1State
+@onready var attack_2_state: LimboState = $HSM/AttackState/Attack2State
+@onready var parry_state: LimboState = $HSM/ParryState
 @onready var hurt_state: LimboState = $HSM/HurtState
 @onready var dead_state: LimboState = $HSM/DeadState
 # Components
@@ -42,13 +47,19 @@ func _init_state_machine() -> void:
 	hsm.add_transition(idle_state, walk_state, &"movement_started")
 	hsm.add_transition(idle_state, attack_state, &"attack_started")
 	hsm.add_transition(idle_state, hurt_state, &"damage_taken")
+	hsm.add_transition(idle_state, parry_state, &"parry_started")
 	
 	hsm.add_transition(walk_state, idle_state, &"movement_stopped")
 	hsm.add_transition(walk_state, attack_state, &"attack_started")
 	hsm.add_transition(walk_state, hurt_state, &"damage_taken")
+	hsm.add_transition(walk_state, parry_state, &"parry_started")
 	
 	hsm.add_transition(attack_state, idle_state, &"attack_finished")
 	hsm.add_transition(attack_state, hurt_state, &"damage_taken")
+	# --- COMBO INTERNAL LOGIC (SUB-HSM) ---
+	attack_state.add_transition(attack_1_state, attack_2_state, &"attack_started")
+	
+	hsm.add_transition(parry_state, idle_state, &"parry_stopped")
 	
 	hsm.add_transition(hurt_state, idle_state, &"recovered")
 	hsm.add_transition(hurt_state, dead_state, &"died")
@@ -64,6 +75,8 @@ func update_input() -> void:
 	
 	if Input.is_action_just_pressed("attack"):
 		buffer_action(BufferedAction.ATTACK, 0.15)
+	elif Input.is_action_just_pressed("parry"):
+		buffer_action(BufferedAction.PARRY, 0.15)
 
 
 func buffer_action(action: BufferedAction, duration: float) -> void:

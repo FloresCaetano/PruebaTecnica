@@ -7,13 +7,16 @@
 [ext_resource type="Texture2D" uid="uid://bxc10ue0btu31" path="res://player/assets/Warrior_Idle.png" id="3_g6k8r"]
 [ext_resource type="Texture2D" uid="uid://llv83ry7fx2g" path="res://player/assets/Warrior_Run.png" id="4_boad6"]
 [ext_resource type="PackedScene" uid="uid://temficjn0tog" path="res://components/health/health_component.tscn" id="5_boad6"]
+[ext_resource type="Texture2D" uid="uid://dhwlgp3e0ykmc" path="res://player/assets/Warrior_Guard.png" id="6_32hag"]
 [ext_resource type="PackedScene" uid="uid://bolpoa5hpjnv2" path="res://components/hurtbox/hurtbox_component.tscn" id="6_boad6"]
 [ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hitbox/hitbox_component.tscn" id="7_rgyib"]
 [ext_resource type="Script" uid="uid://l2y4lf1g715i" path="res://player/fsm/idle_state.gd" id="9_8t03j"]
 [ext_resource type="Script" uid="uid://716dgtexrq73" path="res://player/fsm/walk_state.gd" id="9_hg6s5"]
-[ext_resource type="Script" uid="uid://cc4qdh8mxy6mw" path="res://player/fsm/attack_state.gd" id="11_2ieo8"]
 [ext_resource type="Script" uid="uid://cmmkiswoe8j1g" path="res://player/fsm/hurt_state.gd" id="12_ebec5"]
+[ext_resource type="Script" uid="uid://bhyclkh5uux5b" path="res://player/fsm/attack_1_state.gd" id="13_32hag"]
+[ext_resource type="Script" uid="uid://d012l8jprychr" path="res://player/fsm/parry_state.gd" id="13_wodsf"]
 [ext_resource type="Script" uid="uid://cjp4mcxr2ik1e" path="res://player/fsm/dead_state.gd" id="13_yllr7"]
+[ext_resource type="Script" uid="uid://1dquc37iqd8c" path="res://player/fsm/attack_2_state.gd" id="14_tqiix"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_kb6p2"]
 
@@ -101,6 +104,30 @@ region = Rect2(1152, 0, 192, 192)
 [sub_resource type="AtlasTexture" id="AtlasTexture_s7qer"]
 atlas = ExtResource("3_g6k8r")
 region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8hi5"]
+atlas = ExtResource("6_32hag")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2uvqg"]
+atlas = ExtResource("6_32hag")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1s1yo"]
+atlas = ExtResource("6_32hag")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ejfk"]
+atlas = ExtResource("6_32hag")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jd2rm"]
+atlas = ExtResource("6_32hag")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q28gw"]
+atlas = ExtResource("6_32hag")
+region = Rect2(960, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g4c7l"]
 atlas = ExtResource("4_boad6")
@@ -193,6 +220,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_b8hi5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2uvqg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1s1yo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ejfk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jd2rm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q28gw")
+}],
+"loop": true,
+"name": &"parry",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_g4c7l")
 }, {
 "duration": 1.0,
@@ -220,10 +270,10 @@ radius = 7.0
 height = 36.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boad6"]
-size = Vector2(37, 52)
+size = Vector2(37, 21)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rgyib"]
-size = Vector2(45.5, 52)
+size = Vector2(45.5, 32)
 
 [node name="Player" type="CharacterBody2D" unique_id=319783299 groups=["player"]]
 script = ExtResource("1_rgyib")
@@ -232,8 +282,7 @@ script = ExtResource("1_rgyib")
 texture_filter = 1
 material = SubResource("ShaderMaterial_e7oew")
 sprite_frames = SubResource("SpriteFrames_b8hi5")
-animation = &"idle"
-frame_progress = 0.0066192592
+animation = &"attack2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=71479600]
 position = Vector2(1, 26)
@@ -246,11 +295,12 @@ shape = SubResource("CapsuleShape2D_2uvqg")
 _max_health = 10
 
 [node name="HurtboxComponent" parent="Components" unique_id=1259233882 node_paths=PackedStringArray("health_component") instance=ExtResource("6_boad6")]
+position = Vector2(0, 26)
 collision_layer = 2
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtboxComponent" unique_id=751559961]
-position = Vector2(-0.5, 1)
+position = Vector2(-0.5, -3.5)
 shape = SubResource("RectangleShape2D_boad6")
 debug_color = Color(0.81960785, 0.7019608, 1, 0.21960784)
 
@@ -260,7 +310,7 @@ collision_mask = 4
 is_active = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitboxComponent" unique_id=485455370]
-position = Vector2(40.75, 1)
+position = Vector2(40.75, 16)
 shape = SubResource("RectangleShape2D_rgyib")
 debug_color = Color(0.81960785, 0.7019608, 1, 0)
 
@@ -272,8 +322,21 @@ script = ExtResource("9_8t03j")
 [node name="WalkState" type="LimboState" parent="HSM" unique_id=508152984]
 script = ExtResource("9_hg6s5")
 
-[node name="AttackState" type="LimboState" parent="HSM" unique_id=210146447]
-script = ExtResource("11_2ieo8")
+[node name="AttackState" type="LimboHSM" parent="HSM" unique_id=1330967684]
+
+[node name="Attack1State" type="LimboState" parent="HSM/AttackState" unique_id=2103763219]
+script = ExtResource("13_32hag")
+attack_animation = "attack1"
+attack_frame = 2
+
+[node name="Attack2State" type="LimboState" parent="HSM/AttackState" unique_id=1809988202]
+script = ExtResource("14_tqiix")
+attack_animation = "attack2"
+attack_frame = 2
+
+[node name="ParryState" type="LimboState" parent="HSM" unique_id=845335639]
+script = ExtResource("13_wodsf")
+parry_state_duration = 0.2
 
 [node name="HurtState" type="LimboState" parent="HSM" unique_id=781548314]
 script = ExtResource("12_ebec5")
@@ -285,5 +348,10 @@ script = ExtResource("13_yllr7")
 one_shot = true
 ignore_time_scale = true
 
+[node name="ParryCooldownTimer" type="Timer" parent="." unique_id=1195468007]
+one_shot = true
+ignore_time_scale = true
+
+[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]
 [connection signal="damage_taken" from="Components/HealthComponent" to="." method="_on_health_component_damage_taken"]
 [connection signal="timeout" from="InputBufferTimer" to="." method="_on_input_buffer_timer_timeout"]

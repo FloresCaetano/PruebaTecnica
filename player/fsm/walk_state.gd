@@ -21,3 +21,8 @@ func _update(delta: float) -> void:
 	if player.current_buffered_action == player.BufferedAction.ATTACK:
 		dispatch(&"attack_started")
 		return
+		
+	elif player.current_buffered_action == player.BufferedAction.PARRY:
+		if player.parry_cooldown_timer.is_stopped():
+			dispatch(&"parry_started")
+		return

@@ -1,9 +1,9 @@
 [gd_resource type="BehaviorTree" format=3 uid="uid://cb0ybf24ahnc3"]
 
-[ext_resource type="Script" uid="uid://bicxffqmm7ek" path="res://demo/ai/tasks/select_random_nearby_pos.gd" id="1_as4cg"]
-[ext_resource type="Script" uid="uid://df82exuqnfdb2" path="res://demo/ai/tasks/arrive_pos.gd" id="2_dlpnp"]
+[ext_resource type="Script" uid="uid://bicxffqmm7ek" path="res://enemies/ai/tasks/select_random_nearby_pos.gd" id="1_as4cg"]
+[ext_resource type="Script" uid="uid://df82exuqnfdb2" path="res://enemies/ai/tasks/arrive_pos.gd" id="2_dlpnp"]
 [ext_resource type="Script" uid="uid://ccr43pgd4488l" path="res://enemies/ai/tasks/get_first_in_group.gd" id="3_uv18s"]
-[ext_resource type="Script" uid="uid://b7v2utjmtge0x" path="res://demo/ai/tasks/in_range.gd" id="4_k3g8t"]
+[ext_resource type="Script" uid="uid://b7v2utjmtge0x" path="res://enemies/ai/tasks/in_range.gd" id="4_k3g8t"]
 [ext_resource type="Script" uid="uid://dbo0kq2cwb4qv" path="res://enemies/ai/tasks/face_target.gd" id="5_thvy5"]
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_ewfwq"]

@@ -1,0 +1,67 @@
+[gd_resource type="BehaviorTree" format=3 uid="uid://bqlbjn3faegdj"]
+
+[ext_resource type="Script" uid="uid://byt54grw4iyf5" path="res://enemies/ai/tasks/play_sprite_animation.gd" id="1_k05ju"]
+[ext_resource type="Script" uid="uid://ccr43pgd4488l" path="res://enemies/ai/tasks/get_first_in_group.gd" id="2_prs6f"]
+[ext_resource type="Script" uid="uid://dcjgktglb1slf" path="res://enemies/ai/tasks/pursue.gd" id="3_a2uhy"]
+[ext_resource type="Script" uid="uid://dbo0kq2cwb4qv" path="res://enemies/ai/tasks/face_target.gd" id="4_0og2b"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_k05ju"]
+var/speed/name = &"speed"
+var/speed/type = 3
+var/speed/value = 100.0
+var/speed/hint = 0
+var/speed/hint_string = ""
+
+[sub_resource type="BTAction" id="BTAction_rutms"]
+script = ExtResource("1_k05ju")
+
+[sub_resource type="BTWait" id="BTWait_k05ju"]
+duration = 0.2
+
+[sub_resource type="BTSequence" id="BTSequence_fwb20"]
+custom_name = "Pause before action"
+children = [SubResource("BTAction_rutms"), SubResource("BTWait_k05ju")]
+
+[sub_resource type="BTAction" id="BTAction_hpkks"]
+script = ExtResource("1_k05ju")
+animation_name = "walk"
+
+[sub_resource type="BTAction" id="BTAction_wf1kn"]
+script = ExtResource("2_prs6f")
+group = &"player"
+
+[sub_resource type="BTAction" id="BTAction_svadl"]
+script = ExtResource("3_a2uhy")
+approach_distance = 400.0
+
+[sub_resource type="BTSequence" id="BTSequence_wf1kn"]
+custom_name = "Pursue player"
+children = [SubResource("BTAction_hpkks"), SubResource("BTAction_wf1kn"), SubResource("BTAction_svadl")]
+
+[sub_resource type="BTAction" id="BTAction_avyl3"]
+script = ExtResource("4_0og2b")
+
+[sub_resource type="BTWait" id="BTWait_harik"]
+duration = 0.1
+
+[sub_resource type="BBNode" id="BBNode_svadl"]
+saved_value = NodePath(".")
+resource_name = "."
+
+[sub_resource type="BTCallMethod" id="BTCallMethod_avyl3"]
+node = SubResource("BBNode_svadl")
+method = &"attack"
+
+[sub_resource type="BTWait" id="BTWait_arybc"]
+duration = 0.6
+
+[sub_resource type="BTSequence" id="BTSequence_svadl"]
+custom_name = "Range attack"
+children = [SubResource("BTAction_avyl3"), SubResource("BTWait_harik"), SubResource("BTCallMethod_avyl3"), SubResource("BTWait_arybc")]
+
+[sub_resource type="BTSequence" id="BTSequence_rutms"]
+children = [SubResource("BTSequence_fwb20"), SubResource("BTSequence_wf1kn"), SubResource("BTSequence_svadl")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_k05ju")
+root_task = SubResource("BTSequence_rutms")

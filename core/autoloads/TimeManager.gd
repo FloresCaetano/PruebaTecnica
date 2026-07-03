@@ -12,7 +12,7 @@ func trigger_hit_stop(duration: float, time_scale: float, recover_time: float = 
 	
 	_hit_stop_tween = create_tween()
 	_hit_stop_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	_hit_stop_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	_hit_stop_tween.set_process_mode(Tween.TWEEN_PROCESS_IDLE)
 	_hit_stop_tween.set_ignore_time_scale(true)
 	
 	_hit_stop_tween.tween_interval(duration)

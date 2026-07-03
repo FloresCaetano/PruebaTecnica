@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://f0mjkat4wojr" path="res://enemies/range_enemy/assets/range_enemy_walk.png" id="3_i4sdt"]
 [ext_resource type="PackedScene" uid="uid://temficjn0tog" path="res://components/health/health_component.tscn" id="4_e2gtq"]
 [ext_resource type="PackedScene" uid="uid://bolpoa5hpjnv2" path="res://components/hurtbox/hurtbox_component.tscn" id="5_0il61"]
-[ext_resource type="Script" uid="uid://k8xcq7cwefoy" path="res://components/proyectile_launcher/proyectile_launcher.gd" id="6_e2gtq"]
+[ext_resource type="Script" uid="uid://k8xcq7cwefoy" path="res://components/projectile_launcher/projectile_launcher.gd" id="6_e2gtq"]
 [ext_resource type="AudioStream" uid="uid://bulqecjmnq8fb" path="res://shared/audio/attacks/sword_impact_hit_1.wav" id="6_ldaiu"]
 [ext_resource type="PackedScene" uid="uid://bxsbydv03pd3a" path="res://enemies/range_enemy/arrow_proyectile.tscn" id="7_0il61"]
 [ext_resource type="AudioStream" uid="uid://ca053xcgnu56y" path="res://shared/audio/attacks/sword_impact_hit_2.wav" id="7_7m043"]
@@ -276,7 +276,7 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_0si1o")
 audio_stream_player_2d = NodePath("AudioStreamPlayer2D")
-proyectile_launcher = NodePath("Components/ProyectileLauncher")
+proyectile_launcher = NodePath("Components/ProjectileLauncher")
 animated_sprite_2d = NodePath("AnimatedSprite2D")
 animation_player = NodePath("AnimationPlayer")
 bt_player = NodePath("BTPlayer")
@@ -314,7 +314,7 @@ position = Vector2(0.5, 13)
 shape = SubResource("RectangleShape2D_e2gtq")
 debug_color = Color(0.64896, 0.5616, 0.78, 0.38431373)
 
-[node name="ProyectileLauncher" type="Marker2D" parent="Components" unique_id=1092207025]
+[node name="ProjectileLauncher" type="Marker2D" parent="Components" unique_id=1092207025]
 position = Vector2(33, -25)
 script = ExtResource("6_e2gtq")
 projectile_scene = ExtResource("7_0il61")

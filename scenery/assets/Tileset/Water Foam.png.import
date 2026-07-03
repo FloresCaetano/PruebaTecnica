@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cd14qsoa10mda"
-path="res://.godot/imported/Water Foam.png-0936c86eec73a189929adab67c8ebe54.ctex"
+uid="uid://c1mqw0jndupiv"
+path="res://.godot/imported/water foam.png-71e274afdb0c1a5f0da4b4b7c3deef17.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenery/assets/Tileset/Water Foam.png"
-dest_files=["res://.godot/imported/Water Foam.png-0936c86eec73a189929adab67c8ebe54.ctex"]
+source_file="res://scenery/assets/tileset/water foam.png"
+dest_files=["res://.godot/imported/water foam.png-71e274afdb0c1a5f0da4b4b7c3deef17.ctex"]
 
 [params]
 

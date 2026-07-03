@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://pp11umu07r8m"]
+
+[ext_resource type="Script" uid="uid://df0omfcfyrqpp" path="res://ui/hud.gd" id="1_546lt"]
+[ext_resource type="Texture2D" uid="uid://udemgrunfrcw" path="res://ui/assets/gui/player_icon.png" id="2_7ihmi"]
+[ext_resource type="PackedScene" uid="uid://yqv14nc8wldc" path="res://ui/heart_icon.tscn" id="3_546lt"]
+
+[node name="Hud" type="Control" unique_id=150271082]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+script = ExtResource("1_546lt")
+heart_icon = ExtResource("3_546lt")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=623975119]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer" unique_id=57122316]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="PlayerIcon" type="TextureRect" parent="MarginContainer/HSplitContainer" unique_id=1153297257]
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("2_7ihmi")
+expand_mode = 2
+
+[node name="HeartsContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer" unique_id=493875983]
+layout_mode = 2
+theme_override_constants/separation = 14

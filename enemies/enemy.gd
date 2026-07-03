@@ -3,9 +3,13 @@ extends CharacterBody2D
 
 @export var acceleration: float = 20.0
 @export var attack_duration: float = 0.2
+
+@export_category("Nodes")
 @export var animated_sprite_2d: AnimatedSprite2D
 @export var animation_player: AnimationPlayer
 @export var bt_player: BTPlayer
+@export var navigation_agent_2d: NavigationAgent2D
+@export var hurt_sound_player: AudioStreamPlayer2D
 
 @export_category("Components")
 @export var components: Node2D
@@ -18,8 +22,8 @@ func _ready() -> void:
 		health_component.died.connect(_on_health_component_died)
 
 
-func move(direction: Vector2) -> void:
-	velocity = velocity.move_toward(direction, acceleration)
+func move(target_velocity: Vector2) -> void:
+	velocity = velocity.move_toward(target_velocity, acceleration)
 	move_and_slide()
 
 
@@ -50,7 +54,26 @@ func attack() -> void:
 	pass
 
 
+func move_along_path(target_position: Vector2, speed : float) -> void:
+	if not navigation_agent_2d:
+		return
+		
+	navigation_agent_2d.target_position = target_position
+	
+	if not navigation_agent_2d.is_navigation_finished():
+		var next_path_position : Vector2 = navigation_agent_2d.get_next_path_position()
+		var new_direction : Vector2 = global_position.direction_to(next_path_position)
+		
+		var target_velocity : Vector2 = new_direction * speed
+		move(target_velocity)
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, acceleration)
+		move_and_slide()
+
+
 func _on_health_component_damage_taken(_amount: int) -> void:
+	if hurt_sound_player:
+		hurt_sound_player.play()
 	trigger_texture_flash(0.12)
 	TimeManager.trigger_hit_stop(0.05, 0.001, 0.0)
 

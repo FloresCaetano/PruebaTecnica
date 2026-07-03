@@ -7,10 +7,15 @@
 [ext_resource type="Texture2D" uid="uid://biuy53dfmfrcl" path="res://enemies/basic_enemy/assets/basic_enemy_walk.png" id="3_hpkks"]
 [ext_resource type="PackedScene" uid="uid://temficjn0tog" path="res://components/health/health_component.tscn" id="4_rutms"]
 [ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hitbox/hitbox_component.tscn" id="5_wf1kn"]
+[ext_resource type="AudioStream" uid="uid://bulqecjmnq8fb" path="res://shared/audio/attacks/sword_impact_hit_1.wav" id="6_avyl3"]
 [ext_resource type="PackedScene" uid="uid://bolpoa5hpjnv2" path="res://components/hurtbox/hurtbox_component.tscn" id="6_svadl"]
+[ext_resource type="AudioStream" uid="uid://ca053xcgnu56y" path="res://shared/audio/attacks/sword_impact_hit_2.wav" id="7_harik"]
+[ext_resource type="AudioStream" uid="uid://nws6epuupgl1" path="res://shared/audio/attacks/sword_impact_hit_3.wav" id="8_7v5ht"]
 [ext_resource type="BehaviorTree" uid="uid://ptfsonq8saey" path="res://enemies/ai/trees/basic_enemy.tres" id="8_hpkks"]
+[ext_resource type="AudioStream" uid="uid://cusoj1dvey88" path="res://shared/audio/attacks/spear_attack.wav" id="13_harik"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf1kn"]
+resource_local_to_scene = true
 shader = ExtResource("1_rutms")
 shader_parameter/flash_modifier = 0.0
 shader_parameter/flash_color = Color(1, 1, 1, 1)
@@ -180,21 +185,29 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_mub7m"]
+random_pitch = 1.005793
+random_volume_offset_db = 5.0
+streams_count = 3
+stream_0/stream = ExtResource("6_avyl3")
+stream_1/stream = ExtResource("7_harik")
+stream_2/stream = ExtResource("8_7v5ht")
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_b3t66"]
 radius = 6.3245554
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8a8cg"]
-size = Vector2(36, 15.5)
+size = Vector2(36, 27.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t7ck1"]
-size = Vector2(69.5, 17)
+size = Vector2(116.5, 17)
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_fwb20"]
-var/acceleration/name = &"acceleration"
-var/acceleration/type = 3
-var/acceleration/value = 20.0
-var/acceleration/hint = 0
-var/acceleration/hint_string = ""
+var/speed/name = &"speed"
+var/speed/type = 3
+var/speed/value = 80.0
+var/speed/hint = 0
+var/speed/hint_string = ""
 
 [sub_resource type="Animation" id="Animation_rutms"]
 length = 0.001
@@ -260,7 +273,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.26666668, 0.53333336),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [0.0, -0.44505895925855404, -0.9599310885968813]
+"values": [0.0, -0.4450589592585541, -0.9599310885968813]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -281,12 +294,17 @@ _data = {
 &"die": SubResource("Animation_wf1kn")
 }
 
-[node name="BasicEnemy" type="CharacterBody2D" unique_id=420169498 node_paths=PackedStringArray("hitbox_component", "animated_sprite_2d", "animation_player", "bt_player", "components", "health_component", "hurtbox_component")]
+[node name="BasicEnemy" type="CharacterBody2D" unique_id=420169498 node_paths=PackedStringArray("audio_stream_player_2d", "hitbox_component", "animated_sprite_2d", "animation_player", "bt_player", "navigation_agent_2d", "hurt_sound_player", "components", "health_component", "hurtbox_component")]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_fwb20")
+audio_stream_player_2d = NodePath("AudioStreamPlayer2D")
 hitbox_component = NodePath("Components/HitboxComponent")
 animated_sprite_2d = NodePath("AnimatedSprite2D")
 animation_player = NodePath("AnimationPlayer")
 bt_player = NodePath("BTPlayer")
+navigation_agent_2d = NodePath("NavigationAgent2D")
+hurt_sound_player = NodePath("HurtSoundPlayer")
 components = NodePath("Components")
 health_component = NodePath("Components/HealthComponent")
 hurtbox_component = NodePath("Components/HurtboxComponent")
@@ -296,7 +314,10 @@ modulate = Color(1, 1, 1, 0.9999996)
 texture_filter = 1
 material = SubResource("ShaderMaterial_wf1kn")
 sprite_frames = SubResource("SpriteFrames_udw7g")
-animation = &"idle"
+animation = &"attack"
+
+[node name="HurtSoundPlayer" type="AudioStreamPlayer2D" parent="." unique_id=787281948]
+stream = SubResource("AudioStreamRandomizer_mub7m")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1433727584]
 position = Vector2(0, 30)
@@ -313,7 +334,7 @@ collision_layer = 4
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HurtboxComponent" unique_id=1882730310]
-position = Vector2(3, -4.25)
+position = Vector2(3, -10.25)
 shape = SubResource("RectangleShape2D_8a8cg")
 debug_color = Color(0.67841333, 0.59040004, 0.82, 0.34901962)
 
@@ -322,7 +343,7 @@ collision_mask = 2
 is_active = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitboxComponent" unique_id=1896101376]
-position = Vector2(98.75, 15)
+position = Vector2(75.25, 15)
 shape = SubResource("RectangleShape2D_t7ck1")
 debug_color = Color(0.76818, 0.6603, 0.93, 0.03137255)
 
@@ -332,3 +353,14 @@ blackboard_plan = SubResource("BlackboardPlan_fwb20")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1557862506]
 libraries/ = SubResource("AnimationLibrary_svadl")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1515870042]
+target_desired_distance = 5.0
+avoidance_enabled = true
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=275809394]
+position = Vector2(0, 27.7)
+radius = 10.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1538160709]
+stream = ExtResource("13_harik")

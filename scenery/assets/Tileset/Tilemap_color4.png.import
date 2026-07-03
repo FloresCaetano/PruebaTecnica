@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfrn1w8lgeolh"
-path="res://.godot/imported/Tilemap_color4.png-e7a488529a3f34c982c21b516f57741f.ctex"
+uid="uid://ugnvjaolnh3a"
+path="res://.godot/imported/tilemap_color4.png-8f5d4f42be32054e2b74540aac483287.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenery/assets/Tileset/Tilemap_color4.png"
-dest_files=["res://.godot/imported/Tilemap_color4.png-e7a488529a3f34c982c21b516f57741f.ctex"]
+source_file="res://scenery/assets/tileset/tilemap_color4.png"
+dest_files=["res://.godot/imported/tilemap_color4.png-8f5d4f42be32054e2b74540aac483287.ctex"]
 
 [params]
 

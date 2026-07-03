@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://dc2b7a12gsouc"]
+
+[ext_resource type="Script" uid="uid://bhlvex83qm3t3" path="res://ui/main_menu.gd" id="1_8uxxo"]
+[ext_resource type="Texture2D" uid="uid://brrw6ap87y8pb" path="res://ui/assets/gui/wood_table.png" id="2_ei257"]
+[ext_resource type="FontFile" uid="uid://cay7bxfqtlqv7" path="res://ui/assets/fonts/Jacquard12-Regular.ttf" id="3_p8ri8"]
+[ext_resource type="Texture2D" uid="uid://c3l5nosiqagiq" path="res://ui/assets/gui/smallredsquarebutton_regular.png" id="4_ubpvv"]
+[ext_resource type="Texture2D" uid="uid://dqufdos4jrwmp" path="res://ui/assets/gui/smallredsquarebutton_pressed.png" id="5_arv2f"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l8jcj"]
+texture = ExtResource("4_ubpvv")
+texture_margin_left = 47.0
+texture_margin_top = 47.0
+texture_margin_right = 47.0
+texture_margin_bottom = 47.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cp6tm"]
+texture = ExtResource("5_arv2f")
+texture_margin_left = 47.0
+texture_margin_top = 47.0
+texture_margin_right = 47.0
+texture_margin_bottom = 47.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="MainMenu" type="Control" unique_id=1538922124]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -160.8
+offset_right = 100.0
+offset_bottom = 79.19989
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8uxxo")
+menu_animation_duration = 1.0
+
+[node name="MenuBackGround" type="NinePatchRect" parent="." unique_id=1427836339]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -31.0
+offset_top = -21.199997
+offset_right = 34.0
+offset_bottom = 47.800095
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ei257")
+region_rect = Rect2(109, 107, 231, 252)
+patch_margin_left = 85
+patch_margin_top = 85
+patch_margin_right = 85
+patch_margin_bottom = 85
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1312416912]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=65857810]
+layout_mode = 2
+
+[node name="btnRestart" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2142759261]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_p8ri8")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_l8jcj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_cp6tm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_l8jcj")
+text = "Restart Level"
+
+[node name="btnCloseGame" type="Button" parent="CenterContainer/VBoxContainer" unique_id=692777085]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_p8ri8")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_l8jcj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_cp6tm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_l8jcj")
+text = "Close Game"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/btnRestart" to="." method="_on_btn_restart_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/btnCloseGame" to="." method="_on_btn_close_game_pressed"]

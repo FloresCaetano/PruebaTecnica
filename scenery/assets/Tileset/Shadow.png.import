@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3wbm50gqemke"
-path="res://.godot/imported/Shadow.png-93692334e817b0aa834cee9b81c6b69d.ctex"
+uid="uid://5y43vfyg71xf"
+path="res://.godot/imported/shadow.png-a5a7be217579e4005fd7d4ab45c987f7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenery/assets/Tileset/Shadow.png"
-dest_files=["res://.godot/imported/Shadow.png-93692334e817b0aa834cee9b81c6b69d.ctex"]
+source_file="res://scenery/assets/tileset/shadow.png"
+dest_files=["res://.godot/imported/shadow.png-a5a7be217579e4005fd7d4ab45c987f7.ctex"]
 
 [params]
 

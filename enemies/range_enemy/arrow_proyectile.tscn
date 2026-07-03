@@ -8,6 +8,7 @@
 size = Vector2(12, 20)
 
 [node name="ArrowProyectile" type="Node2D" unique_id=1787114927]
+z_index = 1
 script = ExtResource("1_q5m0h")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=189165618]

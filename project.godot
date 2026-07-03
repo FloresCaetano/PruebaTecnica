@@ -18,16 +18,18 @@ config/icon="res://icon.svg"
 [autoload]
 
 TimeManager="*uid://c4bur1py8ovaq"
-PhantomCameraManager="*uid://duq6jhf6unyis"
+Shaker="*uid://bt5wlm8got2wd"
+GameManager="*uid://c7wumqsltbtux"
 
 [display]
 
 window/size/viewport_width=1366
 window/size/viewport_height=768
+window/size/mode=3
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")
+enabled=PackedStringArray("res://addons/shaker/plugin.cfg")
 
 [input]
 

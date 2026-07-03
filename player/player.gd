@@ -8,14 +8,19 @@ enum BufferedAction {
 }
 
 static var active_player : Player
+@export var active_camera : Camera2D
 @export var speed: float = 150.0
 @export var acceleration: float = 20.0
 var input_direction: Vector2 = Vector2.ZERO
 var current_buffered_action: BufferedAction = BufferedAction.NONE
 
+@onready var parry_particles: GPUParticles2D = $ParryParticles
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var footstep_sounds: AudioStreamPlayer2D = $FootstepSounds
 @onready var parry_cooldown_timer: Timer = $ParryCooldownTimer
 @onready var input_buffer_timer: Timer = $InputBufferTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var shaker_component_2d: ShakerComponent2D = $Camera2D/ShakerComponent2D
 # HSM
 @onready var hsm: LimboHSM = $HSM
 @onready var idle_state: LimboState = $HSM/IdleState
@@ -62,7 +67,7 @@ func _init_state_machine() -> void:
 	hsm.add_transition(parry_state, idle_state, &"parry_stopped")
 	
 	hsm.add_transition(hurt_state, idle_state, &"recovered")
-	hsm.add_transition(hurt_state, dead_state, &"died")
+	hsm.add_transition(hsm.ANYSTATE, dead_state, &"died")
 	
 	hsm.add_transition(dead_state, idle_state, &"level_restarted")
 	
@@ -74,7 +79,7 @@ func update_input() -> void:
 	input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	
 	if Input.is_action_just_pressed("attack"):
-		buffer_action(BufferedAction.ATTACK, 0.15)
+		buffer_action(BufferedAction.ATTACK, 0.3)
 	elif Input.is_action_just_pressed("parry"):
 		buffer_action(BufferedAction.PARRY, 0.15)
 
@@ -120,5 +125,14 @@ func play_damage_flash() -> void:
 	tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.1)
 
 
+func play_camera_shake() -> void:
+	shaker_component_2d.play_shake()
+
+
 func _on_health_component_damage_taken(_amount: int) -> void:
 	hsm.dispatch(&"damage_taken")
+
+
+func _on_health_component_died() -> void:
+	hsm.dispatch(&"died")
+	GameManager.game_over()

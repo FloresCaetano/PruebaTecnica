@@ -1,13 +1,14 @@
 class_name BasicEnemy
 extends Enemy
 
+@export var audio_stream_player_2d: AudioStreamPlayer2D
 @export var hitbox_component: HitboxComponent
 
 func attack() -> void:
 	if hitbox_component and animated_sprite_2d:
 		hitbox_component.activate()
 		animated_sprite_2d.play("attack")
-		
+		audio_stream_player_2d.play()
 		await get_tree().create_timer(attack_duration).timeout
 		hitbox_component.deactivate()
 

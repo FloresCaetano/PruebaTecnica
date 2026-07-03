@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tt5jlsg60flx"
-path="res://.godot/imported/Water Background color.png-a372bc42d167f7163df7f1994c989cb6.ctex"
+uid="uid://dbbrc6ydm8t7q"
+path="res://.godot/imported/water background color.png-9d90435f816443408a4698b1d16b2e45.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenery/assets/Tileset/Water Background color.png"
-dest_files=["res://.godot/imported/Water Background color.png-a372bc42d167f7163df7f1994c989cb6.ctex"]
+source_file="res://scenery/assets/tileset/water background color.png"
+dest_files=["res://.godot/imported/water background color.png-9d90435f816443408a4698b1d16b2e45.ctex"]
 
 [params]
 

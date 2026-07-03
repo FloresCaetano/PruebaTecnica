@@ -14,18 +14,13 @@ var/speed/type = 3
 var/speed/value = 100.0
 var/speed/hint = 0
 var/speed/hint_string = ""
-var/acceleration/name = &"acceleration"
-var/acceleration/type = 3
-var/acceleration/value = 0.0
-var/acceleration/hint = 0
-var/acceleration/hint_string = ""
 
 [sub_resource type="BTAction" id="BTAction_rutms"]
 script = ExtResource("1_arybc")
 
 [sub_resource type="BTRandomWait" id="BTRandomWait_hpkks"]
-min_duration = 0.2
-max_duration = 0.5
+min_duration = 0.5
+max_duration = 1.5
 
 [sub_resource type="BTSequence" id="BTSequence_fwb20"]
 custom_name = "Pause before action"
@@ -37,7 +32,7 @@ group = &"player"
 
 [sub_resource type="BTCondition" id="BTCondition_y2yht"]
 script = ExtResource("5_li4s7")
-distance_max = 500.0
+distance_max = 300.0
 
 [sub_resource type="BTAction" id="BTAction_hpkks"]
 script = ExtResource("1_arybc")
@@ -91,6 +86,7 @@ range_max = 300.0
 
 [sub_resource type="BTAction" id="BTAction_egmfs"]
 script = ExtResource("3_li4s7")
+tolerance = 100.0
 
 [sub_resource type="BTSequence" id="BTSequence_6weg7"]
 custom_name = "Patrol"

@@ -22,13 +22,15 @@ func _generate_name() -> String:
 
 # Called each time this task is ticked (aka executed).
 func _tick(_delta: float) -> Status:
-	var pos: Vector2
-	var is_good_position: bool = false
-	while not is_good_position:
-		# Randomize until we find a good position (good position == not outside the arena).
-		var angle: float = randf() * TAU
-		var rand_distance: float = randf_range(range_min, range_max)
-		pos = agent.global_position + Vector2(sin(angle), cos(angle)) * rand_distance
-		is_good_position = agent.is_good_position(pos)
-	blackboard.set_var(position_var, pos)
+	# 1. Generamos una dirección completamente aleatoria
+	var random_direction := Vector2.RIGHT.rotated(randf_range(0.0, PI*2))
+	var radius : float = randf_range(range_min, range_max)
+	var random_distance := randf_range(radius * 0.5, radius)
+	var target_vector : Vector2 = agent.global_position + (random_direction * random_distance)
+	
+	var navigation_map : RID = agent.get_world_2d().get_navigation_map()
+	
+	# 4. Forzamos a que el punto caiga dentro del polígono navegable más cercano
+	var safe_target_position := NavigationServer2D.map_get_closest_point(navigation_map, target_vector)
+	blackboard.set_var(position_var, safe_target_position)
 	return SUCCESS

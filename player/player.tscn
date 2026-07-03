@@ -10,13 +10,38 @@
 [ext_resource type="Texture2D" uid="uid://dhwlgp3e0ykmc" path="res://player/assets/Warrior_Guard.png" id="6_32hag"]
 [ext_resource type="PackedScene" uid="uid://bolpoa5hpjnv2" path="res://components/hurtbox/hurtbox_component.tscn" id="6_boad6"]
 [ext_resource type="PackedScene" uid="uid://bwqdhaianfw1s" path="res://components/hitbox/hitbox_component.tscn" id="7_rgyib"]
-[ext_resource type="Script" uid="uid://l2y4lf1g715i" path="res://player/fsm/idle_state.gd" id="9_8t03j"]
-[ext_resource type="Script" uid="uid://716dgtexrq73" path="res://player/fsm/walk_state.gd" id="9_hg6s5"]
-[ext_resource type="Script" uid="uid://cmmkiswoe8j1g" path="res://player/fsm/hurt_state.gd" id="12_ebec5"]
-[ext_resource type="Script" uid="uid://bhyclkh5uux5b" path="res://player/fsm/attack_1_state.gd" id="13_32hag"]
-[ext_resource type="Script" uid="uid://d012l8jprychr" path="res://player/fsm/parry_state.gd" id="13_wodsf"]
-[ext_resource type="Script" uid="uid://cjp4mcxr2ik1e" path="res://player/fsm/dead_state.gd" id="13_yllr7"]
-[ext_resource type="Script" uid="uid://1dquc37iqd8c" path="res://player/fsm/attack_2_state.gd" id="14_tqiix"]
+[ext_resource type="Script" uid="uid://l2y4lf1g715i" path="res://player/states/idle_state.gd" id="9_8t03j"]
+[ext_resource type="Script" uid="uid://716dgtexrq73" path="res://player/states/walk_state.gd" id="9_hg6s5"]
+[ext_resource type="Script" uid="uid://cmmkiswoe8j1g" path="res://player/states/hurt_state.gd" id="12_ebec5"]
+[ext_resource type="Script" uid="uid://bhyclkh5uux5b" path="res://player/states/attack_1_state.gd" id="13_32hag"]
+[ext_resource type="Script" uid="uid://d012l8jprychr" path="res://player/states/parry_state.gd" id="13_wodsf"]
+[ext_resource type="Script" uid="uid://cjp4mcxr2ik1e" path="res://player/states/dead_state.gd" id="13_yllr7"]
+[ext_resource type="AudioStream" uid="uid://dlwlfmq6v5nv1" path="res://shared/audio/attacks/sword_attack_1.wav" id="14_c35mf"]
+[ext_resource type="Script" uid="uid://1dquc37iqd8c" path="res://player/states/attack_2_state.gd" id="14_tqiix"]
+[ext_resource type="AudioStream" uid="uid://c31h4bb0ylku0" path="res://shared/audio/attacks/sword_attack_2.wav" id="16_65viv"]
+[ext_resource type="AudioStream" uid="uid://vrbtauomxb4g" path="res://shared/audio/attacks/sword blocked 1.wav" id="20_65viv"]
+[ext_resource type="AudioStream" uid="uid://nws6epuupgl1" path="res://shared/audio/attacks/sword_impact_hit_3.wav" id="20_x7c3f"]
+[ext_resource type="AudioStream" uid="uid://bhipiydv2p8u2" path="res://shared/audio/footsteps/dirt_walk_1.wav" id="22_7pqkx"]
+[ext_resource type="AudioStream" uid="uid://wa0h10s8psgg" path="res://shared/audio/footsteps/dirt_walk_2.wav" id="23_uw77l"]
+[ext_resource type="AudioStream" uid="uid://dl22oynreso36" path="res://shared/audio/footsteps/dirt_walk_3.wav" id="24_rptt4"]
+[ext_resource type="AudioStream" uid="uid://cetgyv5qceik4" path="res://shared/audio/footsteps/dirt_walk_4.wav" id="25_r7pn3"]
+[ext_resource type="AudioStream" uid="uid://iaeukmehypq4" path="res://shared/audio/footsteps/dirt_walk_5.wav" id="26_b8hi5"]
+[ext_resource type="AudioStream" uid="uid://bkjv3rkbspsjr" path="res://shared/audio/misc/dust_scatter.wav" id="27_1s1yo"]
+[ext_resource type="Script" uid="uid://dijexv32mmavn" path="res://addons/shaker/src/Vector2/shaker_component2D.gd" id="27_2uvqg"]
+[ext_resource type="Script" uid="uid://dcffkmhy2f7m6" path="res://addons/shaker/data/Vector2/BaseShakerType2D.gd" id="28_1s1yo"]
+[ext_resource type="Script" uid="uid://cdrt4ryhvik5y" path="res://addons/shaker/data/Vector2/ShakerTypeSineWave2D.gd" id="29_5ejfk"]
+[ext_resource type="Script" uid="uid://7hgxx3o8n06t" path="res://addons/shaker/data/Single/BaseShakerType1D.gd" id="30_jd2rm"]
+[ext_resource type="Script" uid="uid://dkwwa070ovq1v" path="res://addons/shaker/data/Vector2/ShakerPreset2D.gd" id="31_q28gw"]
+
+[sub_resource type="Resource" id="Resource_7s8x2"]
+script = ExtResource("29_5ejfk")
+amplitude = Vector2(20, 20)
+metadata/_custom_type_script = "uid://cdrt4ryhvik5y"
+
+[sub_resource type="Resource" id="Resource_ge24q"]
+script = ExtResource("31_q28gw")
+PositionShake = Array[ExtResource("28_1s1yo")]([SubResource("Resource_7s8x2")])
+metadata/_custom_type_script = "uid://dkwwa070ovq1v"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_kb6p2"]
 
@@ -32,7 +57,7 @@ noise = SubResource("FastNoiseLite_32hag")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e7oew"]
 shader = ExtResource("1_kb6p2")
 shader_parameter/position = Vector2(0.5, 0.515)
-shader_parameter/radius = -0.245
+shader_parameter/radius = -0.3
 shader_parameter/borderWidth = 0.2
 shader_parameter/burnMult = 0.34
 shader_parameter/noiseTexture = SubResource("NoiseTexture2D_tqiix")
@@ -265,34 +290,81 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1s1yo"]
+particle_flag_disable_z = true
+spread = 111.799
+initial_velocity_min = 111.939995
+initial_velocity_max = 139.16
+gravity = Vector3(0, 98, 0)
+linear_accel_min = -8.510002
+linear_accel_max = -8.510002
+damping_min = 100.00001
+damping_max = 100.00001
+scale_max = 5.08
+color = Color(1, 0.9333334, 0, 0.8392157)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2uvqg"]
-radius = 7.0
-height = 36.0
+radius = 6.49
+height = 12.98
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boad6"]
 size = Vector2(37, 21)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rgyib"]
-size = Vector2(45.5, 32)
+size = Vector2(45.5, 57)
 
-[node name="Player" type="CharacterBody2D" unique_id=319783299 groups=["player"]]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2uvqg"]
+streams_count = 5
+stream_0/stream = ExtResource("22_7pqkx")
+stream_1/stream = ExtResource("23_uw77l")
+stream_2/stream = ExtResource("24_rptt4")
+stream_3/stream = ExtResource("25_r7pn3")
+stream_4/stream = ExtResource("26_b8hi5")
+
+[node name="Player" type="CharacterBody2D" unique_id=319783299 node_paths=PackedStringArray("active_camera") groups=["player"]]
 script = ExtResource("1_rgyib")
+active_camera = NodePath("Camera2D")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=295798036]
+physics_interpolation_mode = 1
+position = Vector2(2.1378095, -32.22)
+position_smoothing_enabled = true
+metadata/_edit_lock_ = true
+
+[node name="ShakerComponent2D" type="Node2D" parent="Camera2D" unique_id=1508453596]
+position = Vector2(1.2087402, -0.15240479)
+script = ExtResource("27_2uvqg")
+duration = 2.0
+shake_speed = 5.0
+shakerPreset = SubResource("Resource_ge24q")
+metadata/_custom_type_script = "uid://dijexv32mmavn"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=96013162]
 texture_filter = 1
 material = SubResource("ShaderMaterial_e7oew")
+position = Vector2(0, -32.22)
 sprite_frames = SubResource("SpriteFrames_b8hi5")
-animation = &"attack2"
+animation = &"parry"
+
+[node name="ParryParticles" type="GPUParticles2D" parent="." unique_id=1610557714]
+position = Vector2(0, -32.22)
+emitting = false
+amount = 10
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_1s1yo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=71479600]
-position = Vector2(1, 26)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_2uvqg")
 
 [node name="Components" type="Node2D" parent="." unique_id=57231313]
+position = Vector2(0, -32.22)
 
 [node name="HealthComponent" parent="Components" unique_id=339002736 instance=ExtResource("5_boad6")]
-_max_health = 10
+_max_health = 7
 
 [node name="HurtboxComponent" parent="Components" unique_id=1259233882 node_paths=PackedStringArray("health_component") instance=ExtResource("6_boad6")]
 position = Vector2(0, 26)
@@ -310,7 +382,7 @@ collision_mask = 4
 is_active = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/HitboxComponent" unique_id=485455370]
-position = Vector2(40.75, 16)
+position = Vector2(40.75, 3.5)
 shape = SubResource("RectangleShape2D_rgyib")
 debug_color = Color(0.81960785, 0.7019608, 1, 0)
 
@@ -326,23 +398,28 @@ script = ExtResource("9_hg6s5")
 
 [node name="Attack1State" type="LimboState" parent="HSM/AttackState" unique_id=2103763219]
 script = ExtResource("13_32hag")
+attack_audio = ExtResource("14_c35mf")
 attack_animation = "attack1"
 attack_frame = 2
 
 [node name="Attack2State" type="LimboState" parent="HSM/AttackState" unique_id=1809988202]
 script = ExtResource("14_tqiix")
+attack_audio = ExtResource("16_65viv")
 attack_animation = "attack2"
 attack_frame = 2
 
 [node name="ParryState" type="LimboState" parent="HSM" unique_id=845335639]
 script = ExtResource("13_wodsf")
+parry_audio = ExtResource("20_65viv")
 parry_state_duration = 0.2
 
 [node name="HurtState" type="LimboState" parent="HSM" unique_id=781548314]
 script = ExtResource("12_ebec5")
+hurt_sound = ExtResource("20_x7c3f")
 
 [node name="DeadState" type="LimboState" parent="HSM" unique_id=584723437]
 script = ExtResource("13_yllr7")
+die_sound = ExtResource("27_1s1yo")
 
 [node name="InputBufferTimer" type="Timer" parent="." unique_id=1392140737]
 one_shot = true
@@ -352,6 +429,15 @@ ignore_time_scale = true
 one_shot = true
 ignore_time_scale = true
 
-[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1533575863]
+position = Vector2(0, -32.22)
+max_polyphony = 5
+
+[node name="FootstepSounds" type="AudioStreamPlayer2D" parent="." unique_id=1481318367]
+position = Vector2(0, -32.22)
+stream = SubResource("AudioStreamRandomizer_2uvqg")
+max_polyphony = 2
+
 [connection signal="damage_taken" from="Components/HealthComponent" to="." method="_on_health_component_damage_taken"]
+[connection signal="died" from="Components/HealthComponent" to="." method="_on_health_component_died"]
 [connection signal="timeout" from="InputBufferTimer" to="." method="_on_input_buffer_timer_timeout"]

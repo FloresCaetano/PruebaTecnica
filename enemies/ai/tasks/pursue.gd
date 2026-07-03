@@ -45,30 +45,30 @@ func _enter() -> void:
 
 
 # Called each time this task is ticked (aka executed).
+# Inside pursue.gd
 func _tick(_delta: float) -> Status:
-	var target: Node2D = blackboard.get_var(target_var, null)
+	var target : Node2D = blackboard.get_var(target_var, null)
 	if not is_instance_valid(target):
 		return FAILURE
 
-	var desired_pos: Vector2 = _get_desired_position(target)
+	var desired_pos : Vector2 = _get_desired_position(target)
+	var velocity : float = blackboard.get_var(speed_var, 200)
 	if agent.global_position.distance_to(desired_pos) < TOLERANCE:
 		return SUCCESS
 
-	if agent.global_position.distance_to(_waypoint) < TOLERANCE:
-		_select_new_waypoint(desired_pos)
-
-	var speed: float = blackboard.get_var(speed_var, 200.0)
-	var desired_velocity: Vector2 = agent.global_position.direction_to(_waypoint) * speed
-	agent.move(desired_velocity)
+	agent.move_along_path(desired_pos, velocity)
 	agent.update_facing()
+	
 	return RUNNING
 
 
 ## Get the closest flanking position to target.
 func _get_desired_position(target: Node2D) -> Vector2:
+	var player_y_offset : float = 30
 	var side: float = signf(agent.global_position.x - target.global_position.x)
 	var desired_pos: Vector2 = target.global_position
 	desired_pos.x += approach_distance * side
+	desired_pos.y -= player_y_offset
 	return desired_pos
 
 

@@ -41,29 +41,7 @@ func _tick(_delta: float) -> Status:
 		return SUCCESS
 
 	var speed: float = blackboard.get_var(speed_var, 10.0)
-	var dist: float = absf(agent.global_position.x - target_pos.x)
-	var dir: Vector2 = agent.global_position.direction_to(target_pos)
 
-	# Prefer horizontal movement:
-	var vertical_factor: float = remap(dist, 200.0, 500.0, 1.0, 0.0)
-	vertical_factor = clampf(vertical_factor, 0.0, 1.0)
-	dir.y *= vertical_factor
-
-	# Avoid the node specified by `avoid_var`.
-	# I.e., if `avoid_var` is set, agent will circle around that node while moving into position.
-	if not avoid_var.is_empty():
-		var avoid_node: Node2D = blackboard.get_var(avoid_var)
-		if is_instance_valid(avoid_node):
-			var distance_vector: Vector2 = avoid_node.global_position - agent.global_position
-			if dir.dot(distance_vector) > 0.0:
-				var side := dir.rotated(PI * 0.5).normalized()
-				# The closer we are to the avoid target, the stronger is the avoidance.
-				var strength: float = remap(distance_vector.length(), 200.0, 400.0, 1.0, 0.0)
-				strength = clampf(strength, 0.0, 1.0)
-				var avoidance := side * signf(-side.dot(distance_vector)) * strength
-				dir += avoidance
-
-	var desired_velocity: Vector2 = dir.normalized() * speed
-	agent.move(desired_velocity)
+	agent.move_along_path(target_pos, speed)
 	agent.update_facing()
 	return RUNNING

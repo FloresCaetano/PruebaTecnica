@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jh0cmno2oi4m"
-path="res://.godot/imported/Bushe4.png-6eee654ffccbf0a2d542200d107c4d39.ctex"
+uid="uid://bh883pgvfo4eg"
+path="res://.godot/imported/bushe4.png-10e5573286aa157cf4d2c7f7e0693c23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenery/assets/Decorations/Bushes/Bushe4.png"
-dest_files=["res://.godot/imported/Bushe4.png-6eee654ffccbf0a2d542200d107c4d39.ctex"]
+source_file="res://scenery/assets/decorations/bushes/bushe4.png"
+dest_files=["res://.godot/imported/bushe4.png-10e5573286aa157cf4d2c7f7e0693c23.ctex"]
 
 [params]
 

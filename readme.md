@@ -23,6 +23,8 @@ Proyecto desarrollado en **Godot 4.6.2** utilizando **GDScript** con tipado fuer
 *   **Movimiento:** `W`, `A`, `S`, `D` (Movimiento Top-Down en 8 direcciones).
 *   **Ataque:** `J` (Ejecuta un combo de ataques cuerpo a cuerpo).
 *   **Parry (Bloqueo Perfecto):** `K` (Bloquea daño por completo durante una pequeña ventana de tiempo).
+*   **Menú de Pausa:** `Esc` (Abre/cierra el menú de pausa. *Nota:* El menú no detiene el juego).
+
 
 ---
 

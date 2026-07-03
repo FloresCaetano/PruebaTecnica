@@ -54,7 +54,7 @@ children = [SubResource("BTCondition_a2uhy"), SubResource("BTSequence_1bqyf")]
 
 [sub_resource type="BTCondition" id="BTCondition_a53w3"]
 script = ExtResource("3_0og2b")
-distance_min = 401.0
+distance_min = 201.0
 distance_max = 500.0
 
 [sub_resource type="BTAction" id="BTAction_hfgp4"]

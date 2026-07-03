@@ -4,7 +4,7 @@ Proyecto desarrollado en **Godot 4.6.2** utilizando **GDScript** con tipado fuer
 
 ---
 
-## 🎮 Instrucciones para Abrir y Probar el Proyecto
+## Instrucciones para Abrir y Probar el Proyecto
 
 ### Requisitos y Versiones
 *   **Engine:** Godot Engine **4.6.2** (o superior compatible con la rama 4.6).
@@ -19,33 +19,14 @@ Proyecto desarrollado en **Godot 4.6.2** utilizando **GDScript** con tipado fuer
 3.  Asegúrate de que los addons **LimboAI** y **Shaker** están activados en `Proyecto -> Configuración del Proyecto -> Plugins`.
 4.  Abre y ejecuta la escena principal: [demo_sector.tscn](file:///c:/Proyectos/PruebaTenica/prueba-tecnica/scenery/sectors/demo_sector.tscn) (ubicada en `res://scenery/sectors/demo_sector.tscn`).
 
-### ⌨️ Controles
+### Controles
 *   **Movimiento:** `W`, `A`, `S`, `D` (Movimiento Top-Down en 8 direcciones).
 *   **Ataque:** `J` (Ejecuta un combo de ataques cuerpo a cuerpo).
 *   **Parry (Bloqueo Perfecto):** `K` (Bloquea daño por completo durante una pequeña ventana de tiempo).
 
 ---
 
-## 🏛️ Arquitectura del Proyecto: Composición sobre Herencia
-
-El diseño de software de este proyecto se fundamenta en el principio de **Composición sobre Herencia** (*Composition over Inheritance*). En lugar de construir jerarquías monolíticas y rígidas de clases, las entidades del juego se construyen acoplando módulos autónomos y especializados llamados **Componentes**.
-
-```mermaid
-graph TD
-    Player[Player - CharacterBody2D] --> Components[Components - Node2D]
-    Player --> HSM[LimboHSM - State Machine]
-    
-    Components --> Health[HealthComponent]
-    Components --> Hitbox[HitboxComponent]
-    Components --> Hurtbox[HurtboxComponent]
-    
-    Enemy[Enemy - CharacterBody2D] --> EnemyComponents[Components - Node2D]
-    Enemy --> BTPlayer[BTPlayer - Behavior Tree]
-    
-    EnemyComponents --> EHealth[HealthComponent]
-    EnemyComponents --> EHitbox[HitboxComponent]
-    EnemyComponents --> EHurtbox[HurtboxComponent]
-```
+## Arquitectura del Proyecto: Composición sobre Herencia
 
 ### 1. Desacoplamiento Estricto de Componentes
 Los nodos dentro de la carpeta `components/` están diseñados de forma ciega y autónoma:
@@ -75,7 +56,7 @@ El comportamiento de las entidades se delega a sistemas especializados que separ
 
 ---
 
-## 📂 Organización de Archivos: Estructura por Funcionalidad
+## Organización de Archivos: Estructura por Funcionalidad
 
 El sistema de archivos del proyecto implementa una **Estructura Orientada a Funcionalidades o Dominios** (*Feature-Based Structure*), alineada con la filosofía de Escenas Autocontenidas nativa de Godot.
 
@@ -100,7 +81,7 @@ Cada carpeta de entidad (como `player/` o `enemies/range_enemy/`) contiene todos
 
 ---
 
-## ✨ Retroalimentación y Juice (Sensación de Juego)
+## Retroalimentación y Juice (Sensación de Juego)
 
 Se añadieron diversas mecánicas de impacto y retroalimentación para hacer el juego mucho más interactivo y satisfactorio:
 
@@ -110,12 +91,12 @@ Se añadieron diversas mecánicas de impacto y retroalimentación para hacer el 
 4.  **Sistema de Partículas:** Emisión de chispas y partículas de destello al realizar un **Parry exitoso**.
 5.  **Sonorización Completa:**
     *   Música de fondo en bucle.
-    *   Efectos de sonido (SFX) para pasos (*Footsteps*) diferenciados, ataques físicos del jugador, lanzamiento de flechas de los enemigos de rango, impactos y gemidos de daño.
+    *   Efectos de sonido (SFX) para pasos (*Footsteps*) diferenciados, ataques físicos del jugador, lanzamiento de flechas de los enemigos de rango e impactos.
     *   *Créditos de Audio:* Sonidos extraídos de **Free Fantasy SFX Pack by TomMusic**.
 
 ---
 
-## 🛠️ Buenas Prácticas Aplicadas
+## Buenas Prácticas Aplicadas
 
 *   **Tipado Fuerte Obligatorio:** Todo el código GDScript está fuertemente tipado (`var x : Type`, `func foo() -> void`).
 *   **Guía de Estilo Oficial:** Cumplimiento estricto con las convenciones oficiales de Godot (nomenclatura `snake_case` para variables/funciones, `PascalCase` para nombres de clase, constantes en `SCREAMING_SNAKE_CASE` y señales en pasado).

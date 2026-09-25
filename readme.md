@@ -1,126 +1,126 @@
-# Tiny Swords — Demo Técnica Top-Down 2D
+# Tiny Swords — 2D Top-Down Technical Demo
 
-Proyecto desarrollado en **Godot 4.6.2** utilizando **GDScript** con tipado fuerte. Esta demo técnica implementa un sistema modular de combate y movimiento Top-Down 2D, con inteligencia artificial avanzada mediante Árboles de Comportamiento (Behavior Trees) y una Máquina de Estados Finitos (FSM) jerárquica para el personaje principal.
+Project built in **Godot 4.6.2** using strongly-typed **GDScript**. This technical demo implements a modular 2D top-down combat and movement system, with advanced AI via Behavior Trees and a hierarchical Finite State Machine (FSM) for the main character.
 
 ---
 
-## Instrucciones para Abrir y Probar el Proyecto
+## Instructions to Open and Run the Project
 
-### Requisitos y Versiones
+### Requirements and Versions
 *   **Engine:** Godot Engine **4.6.2**.
-*   **Addons Requeridos:**
-    *   **LimboAI** (v1.8.0): Motor de inteligencia artificial para Árboles de Comportamiento y FSM.
-    *   **Shaker** (v1.0.7): Sistema de sacudida de cámara/pantalla para retroalimentación de impactos.
-*   **Assets Originales:** Tiny Swords (Pixel Frog).
+*   **Required Addons:**
+    *   **LimboAI** (v1.8.0): AI engine for Behavior Trees and FSM.
+    *   **Shaker** (v1.0.7): Camera/screen shake system for impact feedback.
+*   **Original Assets:** Tiny Swords (Pixel Frog).
 
-### Pasos para Ejecutar
-1.  Descarga o clona este repositorio.
-2.  Importa el proyecto en Godot Engine.
-3.  Asegúrate de que los addons **LimboAI** y **Shaker** están activados en `Proyecto -> Configuración del Proyecto -> Plugins`.
-4.  Abre y ejecuta la escena principal: [demo_sector.tscn](scenery/sectors/demo_sector.tscn) (ubicada en `res://scenery/sectors/demo_sector.tscn`).
+### Steps to Run
+1.  Download or clone this repository.
+2.  Import the project into Godot Engine.
+3.  Make sure the **LimboAI** and **Shaker** addons are enabled under `Project -> Project Settings -> Plugins`.
+4.  Open and run the main scene: [demo_sector.tscn](scenery/sectors/demo_sector.tscn) (located at `res://scenery/sectors/demo_sector.tscn`).
 
-### Controles
-*   **Movimiento:** `W`, `A`, `S`, `D` (Movimiento Top-Down en 8 direcciones).
-*   **Ataque:** `J` (Ejecuta un combo de ataques cuerpo a cuerpo).
-*   **Parry (Bloqueo Perfecto):** `K` (Bloquea daño por completo durante una pequeña ventana de tiempo).
-*   **Menú de Pausa:** `Esc` (Abre/cierra el menú de pausa. *Nota:* El menú no detiene el juego).
+### Controls
+*   **Movement:** `W`, `A`, `S`, `D` (8-directional top-down movement).
+*   **Attack:** `J` (executes a melee attack combo).
+*   **Parry (Perfect Block):** `K` (fully blocks damage during a small time window).
+*   **Pause Menu:** `Esc` (opens/closes the pause menu. *Note:* the menu does not stop the game).
 
 
 ---
 
-## Arquitectura del Proyecto: Composición sobre Herencia
+## Project Architecture: Composition over Inheritance
 
-### 1. Desacoplamiento Estricto de Componentes
-Los nodos dentro de la carpeta `components/` están diseñados de forma ciega y autónoma:
-*   [HealthComponent](components/health/health_component.gd): Gestiona exclusivamente los puntos de vida, muta variables y emite señales de estado (`damage_taken`, `died`, `max_health_changed`). No asume el tipo de su nodo padre.
-*   [HitboxComponent](components/hitbox/hitbox_component.gd): Área de daño física (`Area2D`) que inflige puntos de daño a las áreas que la toquen y que posean un `HurtboxComponent`.
-*   [HurtboxComponent](components/hurtbox/hurtbox_component.gd): Área receptora de daño física (`Area2D`) o entidad que detecta colisiones con `HitboxComponent` y traslada el impacto a su `HealthComponent` asignado.
-*   [ProjectileLauncher](components/projectile_launcher/projectile_launcher.gd): Componente especializado para enemigos a distancia. Calcula trayectorias parabólicas interpoladas mediante un objeto de contexto de disparo (`TrajectoryContext`) y tweens para lanzar proyectiles de forma modular sin interferir con la física básica del cuerpo del enemigo.
+### 1. Strict Component Decoupling
+Nodes inside the `components/` folder are designed to be blind and self-contained:
+*   [HealthComponent](components/health/health_component.gd): Exclusively manages health points, mutates its own variables, and emits state signals (`damage_taken`, `died`, `max_health_changed`). It never assumes the type of its parent node.
+*   [HitboxComponent](components/hitbox/hitbox_component.gd): Physical damage area (`Area2D`) that deals damage to any area it touches that owns a `HurtboxComponent`.
+*   [HurtboxComponent](components/hurtbox/hurtbox_component.gd): Physical damage-receiving area (`Area2D`) or entity that detects collisions with a `HitboxComponent` and forwards the impact to its assigned `HealthComponent`.
+*   [ProjectileLauncher](components/projectile_launcher/projectile_launcher.gd): Specialized component for ranged enemies. Calculates interpolated parabolic trajectories through a shot context object (`TrajectoryContext`) and tweens to launch projectiles modularly without interfering with the enemy body's base physics.
 
-### 2. Comunicación mediante Señales (Hacia Arriba) y Métodos (Hacia Abajo)
-Para mantener un acoplamiento débil (*loose coupling*), el flujo de comunicación sigue una regla estricta:
-*   **Llamadas directas hacia abajo (Métodos):** El nodo raíz invoca métodos en sus componentes hijos cuando requiere alterar su estado interno (ej: curar, aplicar daño manualmente, activar o desactivar hitboxes).
-*   **Señales hacia arriba (Programación Reactiva):** Los componentes nunca modifican directamente a sus padres. Cuando ocurre un evento relevante (por ejemplo, `died`), el componente emite una señal. La entidad principal o los sistemas de interfaz de usuario se conectan a estas señales para reaccionar visual y lógicamente.
+### 2. Communication via Signals (Upward) and Methods (Downward)
+To keep loose coupling, communication follows a strict rule:
+*   **Direct calls downward (Methods):** The root node invokes methods on its child components when it needs to alter their internal state (e.g. heal, manually apply damage, enable/disable hitboxes).
+*   **Signals upward (Reactive Programming):** Components never modify their parents directly. When a relevant event occurs (e.g. `died`), the component emits a signal. The main entity or UI systems connect to these signals to react visually and logically.
 
-### 3. Patrón Service Locator Localizado (Variables Estáticas)
-Para erradicar búsquedas lineales en el árbol de escenas que comprometan el rendimiento (como `get_tree().get_nodes_in_group()`), se implementó un patrón de **Localizador de Servicios** a través de variables de clase estáticas (`static var`):
-*   `Player.active_player`: Registra su referencia en tiempo de ejecución. Permite a los enemigos y la interfaz acceder al jugador de manera instantánea, fuertemente tipada y con autocompletado desde cualquier script.
-*   `MainMenu.active_menu`: Facilita la invocación del menú del juego ante eventos de Game Over de forma global y eficiente.
+### 3. Localized Service Locator Pattern (Static Variables)
+To avoid linear scene-tree lookups that hurt performance (like `get_tree().get_nodes_in_group()`), a **Service Locator** pattern was implemented through static class variables (`static var`):
+*   `Player.active_player`: Registers its runtime reference. Lets enemies and the UI access the player instantly, strongly typed and with autocompletion from any script.
+*   `MainMenu.active_menu`: Makes it easy to invoke the game menu on Game Over events globally and efficiently.
 
-### 4. Inteligencia Artificial Modular y Máquinas de Estados
-El comportamiento de las entidades se delega a sistemas especializados que separan la toma de decisiones de la ejecución física:
-*   **Jugador (Finite State Machine):** Controlado por una máquina de estados jerárquica ([LimboHSM](player/player.gd)) estructurada en estados independientes:
+### 4. Modular AI and State Machines
+Entity behavior is delegated to specialized systems that separate decision-making from physical execution:
+*   **Player (Finite State Machine):** Controlled by a hierarchical state machine ([LimboHSM](player/player.gd)) structured into independent states:
     *   [IdleState](player/states/idle_state.gd) / [WalkState](player/states/walk_state.gd)
-    *   [AttackState](player/states/attack_state.gd) (y sus subestados combo `Attack1State` y `Attack2State`)
-    *   [ParryState](player/states/parry_state.gd): Bloquea el daño por completo durante una pequeña fracción de segundo mediante una ventana activa configurable. Utiliza un `ParryCooldownTimer` en el jugador para evitar abusos de la mecánica.
+    *   [AttackState](player/states/attack_state.gd) (and its combo substates `Attack1State` and `Attack2State`)
+    *   [ParryState](player/states/parry_state.gd): Fully blocks damage for a small fraction of a second through a configurable active window. Uses a `ParryCooldownTimer` on the player to prevent ability spam.
     *   [HurtState](player/states/hurt_state.gd) / [DeadState](player/states/dead_state.gd)
-*   **Enemigos (LimboAI - Behavior Trees):** Los enemigos utilizan árboles de comportamiento altamente modulares ([basic_enemy.tres](enemies/ai/trees/basic_enemy.tres) y [range_enemy.tres](enemies/ai/trees/range_enemy.tres)). Las acciones específicas (perseguir, patrullar, mantener rango, huir) se encapsulan en scripts de tareas independientes en la carpeta `ai/tasks/`, facilitando la expansión del juego con nuevos enemigos sin reescribir el núcleo del código.
+*   **Enemies (LimboAI - Behavior Trees):** Enemies use highly modular behavior trees ([basic_enemy.tres](enemies/ai/trees/basic_enemy.tres) and [range_enemy.tres](enemies/ai/trees/range_enemy.tres)). Specific actions (chase, patrol, keep range, flee) are encapsulated in independent task scripts inside `ai/tasks/`, making it easy to add new enemies without rewriting the core code.
 
 ---
 
-## Comportamiento Detallado de los Enemigos (Behavior Trees)
+## Detailed Enemy Behavior (Behavior Trees)
 
-### 1. Enemigo Cuerpo a Cuerpo (Basic Enemy)
+### 1. Melee Enemy (Basic Enemy)
 
-El árbol estructurado en [basic_enemy.tres](enemies/ai/trees/basic_enemy.tres) procesa la lógica mediante un Selector compuesto por tres flujos priorizados de izquierda a derecha:
+The tree defined in [basic_enemy.tres](enemies/ai/trees/basic_enemy.tres) processes logic through a Selector made up of three flows prioritized left to right:
 
-*   **Persecución Reactiva (Detect and combat):** El árbol utiliza un nodo compuesto Parallel que procesa de manera simultánea la condición [InRange(0, 300)](enemies/ai/tasks/in_range.gd) y la secuencia de movimiento hacia el objetivo ([Pursue player](enemies/ai/tasks/pursue.gd)). Esto permite que el agente compruebe constantemente la distancia en tiempo real mientras se desplaza; de esta forma, si el jugador se aleja lo suficiente y rompe el rango de 300 unidades, la rama falla instantáneamente permitiendo que el jugador escape.
-*   **Combate Cuerpo a Cuerpo (Melee attack):** Si el jugador está dentro del rango físico, el árbol detiene el movimiento, ejecuta [FaceTarget](enemies/ai/tasks/face_target.gd) para orientar el sprite, aplica un retraso táctico de 0.1s, invoca de manera modular el método [attack()](enemies/enemy.gd#L53) en el nodo raíz y aplica un cooldown de recuperación de 0.6s.
-*   **Patrulla Pasiva (Patrol):** Si no hay detección activa del jugador, el agente reproduce su animación de movimiento, selecciona una posición aleatoria en un rango de 100.0 a 300.0 unidades ([SelectRandomNearbyPos](enemies/ai/tasks/select_random_nearby_pos.gd)) y se desplaza hacia ella mediante la tarea [Arrive](enemies/ai/tasks/arrive_pos.gd).
+*   **Reactive Pursuit (Detect and combat):** The tree uses a Parallel composite node that simultaneously processes the [InRange(0, 300)](enemies/ai/tasks/in_range.gd) condition and the movement sequence toward the target ([Pursue player](enemies/ai/tasks/pursue.gd)). This lets the agent constantly check the real-time distance while moving; if the player moves far enough away to break the 300-unit range, the branch fails instantly, letting the player escape.
+*   **Melee Combat (Melee attack):** If the player is within physical range, the tree stops movement, runs [FaceTarget](enemies/ai/tasks/face_target.gd) to orient the sprite, applies a 0.1s tactical delay, modularly invokes the [attack()](enemies/enemy.gd#L53) method on the root node, and applies a 0.6s recovery cooldown.
+*   **Passive Patrol (Patrol):** If there's no active player detection, the agent plays its movement animation, picks a random position within a range of 100.0 to 300.0 units ([SelectRandomNearbyPos](enemies/ai/tasks/select_random_nearby_pos.gd)), and moves toward it via the [Arrive](enemies/ai/tasks/arrive_pos.gd) task.
 
-### 2. Enemigo a Distancia (Range Enemy)
+### 2. Range Enemy
 
-El árbol estructurado en [range_enemy.tres](enemies/ai/trees/range_enemy.tres) gestiona las distancias de combate del arquero mediante un selector de zonas físicas:
+The tree defined in [range_enemy.tres](enemies/ai/trees/range_enemy.tres) manages the archer's combat distances through a physical-zone selector:
 
-*   **Evasión de Emergencia (Check if player gets too close):** Si el jugador rompe la distancia de seguridad entrando en un rango crítico de 0 a 200 unidades, la condición se cumple y el enemigo activa una secuencia de huida. Utiliza la tarea [SelectFleePosFrom](enemies/ai/tasks/select_flee_position_from_target.gd) para calcular un vector opuesto al jugador y se desplaza inmediatamente mediante [Arrive](enemies/ai/tasks/arrive_pos.gd).
-*   **Ataque de Rango (Detect and combat):** Si el jugador se encuentra en la zona óptima de disparo ([InRange(201, 500)](enemies/ai/tasks/in_range.gd)), el enemigo se planta en el sitio, orienta su sprite con [FaceTarget](enemies/ai/tasks/face_target.gd), genera el disparo modular invocando [attack()](enemies/enemy.gd#L53) a través del componente [ProjectileLauncher](components/projectile_launcher/projectile_launcher.gd) y procesa un tiempo de recarga estricto de 1.5s.
-*   **Patrulla Pasiva (Patrol):** Al igual que el enemigo básico, si el jugador está fuera del mapa de influencia, el agente patrulla zonas aleatorias cercanas para mantener el escenario dinámico.
+*   **Emergency Evasion (Check if player gets too close):** If the player breaks the safety distance by entering a critical 0-200 unit range, the condition triggers and the enemy starts a flee sequence. It uses the [SelectFleePosFrom](enemies/ai/tasks/select_flee_position_from_target.gd) task to compute a vector opposite the player and immediately moves via [Arrive](enemies/ai/tasks/arrive_pos.gd).
+*   **Ranged Attack (Detect and combat):** If the player is in the optimal firing zone ([InRange(201, 500)](enemies/ai/tasks/in_range.gd)), the enemy plants itself, orients its sprite with [FaceTarget](enemies/ai/tasks/face_target.gd), fires modularly by invoking [attack()](enemies/enemy.gd#L53) through the [ProjectileLauncher](components/projectile_launcher/projectile_launcher.gd) component, and processes a strict 1.5s reload time.
+*   **Passive Patrol (Patrol):** Just like the basic enemy, if the player is outside its influence radius, the agent patrols nearby random zones to keep the scene dynamic.
 
 ---
 
-## Organización de Archivos: Estructura por Funcionalidad
+## File Organization: Feature-Based Structure
 
-El sistema de archivos del proyecto implementa una **Estructura Orientada a Funcionalidades o Dominios** (*Feature-Based Structure*), alineada con la filosofía de Escenas Autocontenidas nativa de Godot.
+The project's file system implements a **Feature/Domain-Based Structure**, aligned with Godot's native Self-Contained Scenes philosophy.
 
 ```
 prueba-tecnica/
-├── addons/                  # Plugins de terceros (LimboAI, Shaker)
-├── components/              # Componentes de composición (Health, Hitbox, Hurtbox, ProjectileLauncher)
-├── core/                    # Sistemas y Autoloads globales (GameManager, TimeManager)
-├── enemies/                 # Escenas, scripts y lógica de IA de los enemigos
-│   ├── ai/                  # Behavior Trees y Tareas reutilizables (BT Tasks)
-│   ├── basic_enemy/         # Enemigo cuerpo a cuerpo (Melee Enemy)
-│   └── range_enemy/         # Enemigo que ataca a distancia (Range Enemy)
-├── player/                  # Escenas, sprites y estados de la FSM del Player
-│   └── states/              # Implementaciones individuales de los estados de la HSM
-├── scenery/                 # Recursos de nivel, mapas de tilemaps y decoración
-├── shared/                  # Shaders genéricos y recursos de audio compartidos
-└── ui/                      # HUD e interfaces de usuario (Menús, pantallas de carga, etc.)
+├── addons/                  # Third-party plugins (LimboAI, Shaker)
+├── components/              # Composition components (Health, Hitbox, Hurtbox, ProjectileLauncher)
+├── core/                    # Global systems and Autoloads (GameManager, TimeManager)
+├── enemies/                 # Enemy scenes, scripts, and AI logic
+│   ├── ai/                  # Behavior Trees and reusable Tasks (BT Tasks)
+│   ├── basic_enemy/         # Melee Enemy
+│   └── range_enemy/         # Range Enemy
+├── player/                  # Player scenes, sprites, and FSM states
+│   └── states/              # Individual HSM state implementations
+├── scenery/                 # Level resources, tilemaps, and decoration
+├── shared/                  # Generic shaders and shared audio resources
+└── ui/                      # HUD and user interfaces (menus, loading screens, etc.)
 ```
 
-### Principio de Localización
-Cada carpeta de entidad (como `player/` o `enemies/range_enemy/`) contiene todos los recursos necesarios para que el micromódulo funcione: scripts (`.gd`), escenas (`.tscn`), texturas y animaciones. Si se necesita remover un enemigo, basta con eliminar su directorio sin romper referencias externas ni dejar archivos huérfanos.
+### Localization Principle
+Each entity folder (like `player/` or `enemies/range_enemy/`) contains all the resources the micro-module needs to work: scripts (`.gd`), scenes (`.tscn`), textures, and animations. To remove an enemy, it's enough to delete its directory without breaking external references or leaving orphaned files.
 
 ---
 
-## Retroalimentación y Juice (Sensación de Juego)
+## Feedback and Juice (Game Feel)
 
-Se añadieron diversas mecánicas de impacto y retroalimentación para hacer el juego mucho más interactivo y satisfactorio:
+Several impact and feedback mechanics were added to make the game much more interactive and satisfying:
 
-1.  **Hit Stop (Detención del Tiempo):** Implementado en el autoload global [TimeManager](core/autoloads/TimeManager.gd). Detiene o ralentiza momentáneamente la escala de tiempo del juego (`Engine.time_scale`) en los impactos críticos y muertes para dar peso a los golpes.
-2.  **Hit Flash Shader:** Al recibir daño, los sprites de los personajes ejecutan un efecto de destello de color (blanco/rojo) controlado dinámicamente mediante el sombreador [flash.gdshader](shared/shaders/flash.gdshader) y un nodo `Tween`.
-3.  **Camera Shake (Sacudida de Pantalla):** Integrado mediante `ShakerComponent2D` en la cámara del jugador, activándose cuando el jugador recibe daño para acentuar el impacto físico.
-4.  **Sistema de Partículas:** Emisión de chispas y partículas de destello al realizar un **Parry exitoso**.
-5.  **Sonorización Completa:**
-    *   Música de fondo en bucle.
-    *   Efectos de sonido (SFX) para pasos (*Footsteps*) diferenciados, ataques físicos del jugador, lanzamiento de flechas de los enemigos de rango e impactos.
-    *   *Créditos de Audio:* Sonidos extraídos de **Free Fantasy SFX Pack by TomMusic**.
+1.  **Hit Stop (Time Freeze):** Implemented in the global autoload [TimeManager](core/autoloads/TimeManager.gd). Momentarily stops or slows down the game's time scale (`Engine.time_scale`) on critical hits and deaths to give weight to impacts.
+2.  **Hit Flash Shader:** When taking damage, character sprites run a color flash effect (white/red) driven dynamically through the [flash.gdshader](shared/shaders/flash.gdshader) shader and a `Tween` node.
+3.  **Camera Shake:** Integrated via `ShakerComponent2D` on the player's camera, triggered when the player takes damage to accentuate the physical impact.
+4.  **Particle System:** Spark and flash particles on a **successful Parry**.
+5.  **Full Sound Design:**
+    *   Looping background music.
+    *   Differentiated footstep SFX, player melee attacks, ranged enemy arrow shots, and impacts.
+    *   *Audio Credits:* Sounds sourced from the **Free Fantasy SFX Pack by TomMusic**.
 
 ---
 
-## Buenas Prácticas Aplicadas
+## Best Practices Applied
 
-*   **Tipado Fuerte Obligatorio:** Todo el código GDScript está fuertemente tipado (`var x : Type`, `func foo() -> void`).
-*   **Guía de Estilo Oficial:** Cumplimiento estricto con las convenciones oficiales de Godot (nomenclatura `snake_case` para variables/funciones, `PascalCase` para nombres de clase, constantes en `SCREAMING_SNAKE_CASE` y señales en pasado).
-*   **Ausencia de Magic Numbers:** Los valores numéricos arbitrarios fueron extraídos en constantes autodescriptivas a nivel de clase.
-*   **Proyecto Limpio:** Libre de errores y advertencias al cargarse y ejecutarse en el editor de Godot.
+*   **Mandatory Strong Typing:** All GDScript code is strongly typed (`var x : Type`, `func foo() -> void`).
+*   **Official Style Guide:** Strict compliance with Godot's official conventions (`snake_case` for variables/functions, `PascalCase` for class names, `SCREAMING_SNAKE_CASE` constants, and past-tense signals).
+*   **No Magic Numbers:** Arbitrary numeric values were extracted into self-descriptive class-level constants.
+*   **Clean Project:** Loads and runs free of errors and warnings in the Godot editor.
